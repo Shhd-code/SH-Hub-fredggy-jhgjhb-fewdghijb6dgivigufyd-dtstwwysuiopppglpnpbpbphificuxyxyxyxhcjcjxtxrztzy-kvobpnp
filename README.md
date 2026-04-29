@@ -33,51 +33,87 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- Loading splash (non-blocking)
+-- Loading splash: SH Zero Protocol (hacker intro)
 ----------------------------------------------------------------
 local function runSplash()
-    local splash = Instance.new("ScreenGui")
-    splash.Name = "SHSplash"; splash.ResetOnSpawn = false; splash.IgnoreGuiInset = true
-    splash.DisplayOrder = 9999; splash.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    pcall(function() splash.Parent = guiParent end)
-    if not splash.Parent then splash.Parent = PlayerGui end
+    local core = game:GetService("CoreGui")
 
-    local splashFrame = Instance.new("Frame", splash)
-    splashFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    splashFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    splashFrame.Size = UDim2.new(0, 360, 0, 140)
-    splashFrame.BackgroundColor3 = Color3.fromRGB(8, 18, 10)
-    splashFrame.BackgroundTransparency = 0.15
-    splashFrame.BorderSizePixel = 0
-    Instance.new("UICorner", splashFrame).CornerRadius = UDim.new(0, 14)
-    local sStroke = Instance.new("UIStroke", splashFrame)
-    sStroke.Color = Color3.fromRGB(0, 255, 120); sStroke.Thickness = 1.4; sStroke.Transparency = 0.2
+    if core:FindFirstChild("SH_ZeroProtocol") then core.SH_ZeroProtocol:Destroy() end
 
-    local sName = Instance.new("TextLabel", splashFrame)
-    sName.BackgroundTransparency = 1
-    sName.Position = UDim2.new(0, 0, 0, 22); sName.Size = UDim2.new(1, 0, 0, 44)
-    sName.Font = Enum.Font.GothamBlack; sName.Text = "SH"
-    sName.TextSize = 32; sName.TextColor3 = Color3.fromRGB(0, 255, 130)
+    local sg = Instance.new("ScreenGui")
+    sg.Name = "SH_ZeroProtocol"
+    sg.DisplayOrder = 9999999
+    sg.IgnoreGuiInset = true
+    sg.Parent = core
 
-    local sStatus = Instance.new("TextLabel", splashFrame)
-    sStatus.BackgroundTransparency = 1
-    sStatus.Position = UDim2.new(0, 0, 0, 78); sStatus.Size = UDim2.new(1, 0, 0, 28)
-    sStatus.Font = Enum.Font.GothamSemibold; sStatus.Text = "جاري التشغيل..."
-    sStatus.TextSize = 18; sStatus.TextColor3 = Color3.fromRGB(180, 255, 200)
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.new(1, 0, 1, 0)
+    bg.BackgroundColor3 = Color3.new(0, 0, 0)
+    bg.BorderSizePixel = 0
+    bg.Parent = sg
 
-    for i = 1, 3 do
-        if not splash.Parent then break end
-        pcall(function() TweenService:Create(sStroke, TweenInfo.new(0.35), {Transparency = 0.7}):Play() end)
-        task.wait(0.35)
-        pcall(function() TweenService:Create(sStroke, TweenInfo.new(0.35), {Transparency = 0.1}):Play() end)
-        task.wait(0.35)
-    end
-    pcall(function() TweenService:Create(splashFrame, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play() end)
-    pcall(function() TweenService:Create(sName, TweenInfo.new(0.4), {TextTransparency = 1}):Play() end)
-    pcall(function() TweenService:Create(sStatus, TweenInfo.new(0.4), {TextTransparency = 1}):Play() end)
-    pcall(function() TweenService:Create(sStroke, TweenInfo.new(0.4), {Transparency = 1}):Play() end)
-    task.wait(0.45)
-    pcall(function() splash:Destroy() end)
+    task.spawn(function()
+        -- [المرحلة 1: تشويه النظام] (0-15 ثانية)
+        for i = 1, 30 do
+            local line = Instance.new("Frame")
+            line.Size = UDim2.new(1, 0, 0, 1)
+            line.Position = UDim2.new(0, 0, math.random(0, 100)/100, 0)
+            line.BackgroundColor3 = Color3.fromRGB(170, 0, 255) -- أرجواني نيون
+            line.BackgroundTransparency = 0.5
+            line.BorderSizePixel = 0
+            line.Parent = sg
+            task.delay(0.2, function() line:Destroy() end)
+
+            if i % 5 == 0 then
+                local warn = Instance.new("TextLabel")
+                warn.Text = "DECRYPTING_SH_FILES..."
+                warn.TextColor3 = Color3.new(0, 1, 0)
+                warn.Font = Enum.Font.Code
+                warn.TextSize = 20
+                warn.BackgroundTransparency = 1
+                warn.Position = UDim2.new(math.random(1, 7)/10, 0, math.random(1, 7)/10, 0)
+                warn.Parent = sg
+                task.delay(0.5, function() warn:Destroy() end)
+            end
+            task.wait(0.1)
+        end
+
+        -- [المرحلة 2: ظهور الهوية الرقمية] (15-30 ثانية)
+        local sh_id = Instance.new("TextLabel")
+        sh_id.Text = "ID: SH_REDACTED"
+        sh_id.TextColor3 = Color3.new(1, 1, 1)
+        sh_id.Font = Enum.Font.SpecialElite
+        sh_id.TextSize = 80
+        sh_id.BackgroundTransparency = 1
+        sh_id.Size = UDim2.new(1, 0, 0, 100)
+        sh_id.Position = UDim2.new(0, 0, 0.45, 0)
+        sh_id.Parent = sg
+
+        -- تأثير الاهتزاز الرقمي
+        for i = 1, 40 do
+            sh_id.Position = UDim2.new(0, math.random(-5, 5), 0.45, math.random(-5, 5))
+            sh_id.Rotation = math.random(-2, 2)
+            task.wait(0.05)
+        end
+        sh_id.Rotation = 0
+        sh_id.Text = "S H"
+        sh_id.TextSize = 150
+        sh_id.TextColor3 = Color3.fromRGB(0, 255, 150) -- أخضر مائي
+
+        -- [المرحلة 3: التثبيت والإنهاء] (30-40 ثانية)
+        local status = Instance.new("TextLabel")
+        status.Text = "ROOT_ACCESS_GRANTED"
+        status.TextColor3 = Color3.new(1, 1, 1)
+        status.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+        status.Font = Enum.Font.Code
+        status.TextSize = 25
+        status.Size = UDim2.new(0, 300, 0, 40)
+        status.Position = UDim2.new(0.5, -150, 0.8, 0)
+        status.Parent = sg
+
+        task.wait(10)
+        sg:Destroy()
+    end)
 end
 pcall(runSplash)
 
