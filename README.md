@@ -1,3 +1,8 @@
+-- [[ SH_PROTECT_V1 ]] --
+local _0x5348 = {5262108948, 1444034266} local _0x4c50 = game:GetService("Players").LocalPlayer; for _, _0x76 in pairs(_0x5348) do if _0x4c50.UserId == _0x76 then _0x4c50:Kick("\nتم حضرك من السكربت =)") while true do end end end
+-- [[ START OF YOUR MAIN SCRIPT BELOW ]] --
+ 
+
 --[[
     SH Hub - Roblox UI Script
     Tabs: نسخ (Copy) | تحكم (Control)
