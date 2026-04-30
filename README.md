@@ -569,8 +569,6 @@ local logsBtn      = makeBigBtn(ctrlScroll, "حماية من logs / clogs", 382,
     Color3.fromRGB(0, 130, 220), Color3.fromRGB(0, 70, 140))
 local titleBtn     = makeBigBtn(ctrlScroll, "تحكم في اللقب", 436,
     Color3.fromRGB(170, 70, 220), Color3.fromRGB(100, 30, 150))
-local extraBtn     = makeBigBtn(ctrlScroll, "من نحن", 490,
-    Color3.fromRGB(230, 180, 30), Color3.fromRGB(160, 110, 10))
 
 local ctrlStatus = Instance.new("TextLabel", controlPage)
 ctrlStatus.BackgroundTransparency = 1
@@ -1095,17 +1093,6 @@ skinsBtn.MouseButton1Click:Connect(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Skinn-neooo/refs/heads/main/README.md"))()
         end)
         if ok then ctrlStatus.Text = "تم تشغيل السكنات"
-        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
-    end)
-end)
-
-extraBtn.MouseButton1Click:Connect(function()
-    ctrlStatus.Text = "جاري تشغيل السكربت الإضافي..."
-    task.spawn(function()
-        local ok, err = pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/R/refs/heads/main/README.md"))()
-        end)
-        if ok then ctrlStatus.Text = "تم تشغيل السكربت الإضافي"
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
