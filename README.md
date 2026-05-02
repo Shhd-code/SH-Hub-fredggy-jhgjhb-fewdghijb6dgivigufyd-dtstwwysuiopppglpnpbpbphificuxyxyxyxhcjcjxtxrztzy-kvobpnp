@@ -1,8 +1,3 @@
--- [[ SH_PROTECT_V1 ]] --
-local _0x5348 = {5262108948, 1444034266} local _0x4c50 = game:GetService("Players").LocalPlayer; for _, _0x76 in pairs(_0x5348) do if _0x4c50.UserId == _0x76 then _0x4c50:Kick("\nتم حضرك من السكربت =)") while true do end end end
--- [[ START OF YOUR MAIN SCRIPT BELOW ]] --
- 
-
 --[[
     SH Hub - Roblox UI Script
     Tabs: نسخ (Copy) | تحكم (Control)
@@ -574,6 +569,8 @@ local logsBtn      = makeBigBtn(ctrlScroll, "حماية من logs / clogs", 382,
     Color3.fromRGB(0, 130, 220), Color3.fromRGB(0, 70, 140))
 local titleBtn     = makeBigBtn(ctrlScroll, "تحكم في اللقب", 436,
     Color3.fromRGB(170, 70, 220), Color3.fromRGB(100, 30, 150))
+local allBtn       = makeBigBtn(ctrlScroll, "نسخ all", 490,
+    Color3.fromRGB(30, 180, 255), Color3.fromRGB(10, 100, 180))
 
 local ctrlStatus = Instance.new("TextLabel", controlPage)
 ctrlStatus.BackgroundTransparency = 1
@@ -1098,6 +1095,17 @@ skinsBtn.MouseButton1Click:Connect(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Skinn-neooo/refs/heads/main/README.md"))()
         end)
         if ok then ctrlStatus.Text = "تم تشغيل السكنات"
+        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
+    end)
+end)
+
+allBtn.MouseButton1Click:Connect(function()
+    ctrlStatus.Text = "جاري تشغيل نسخ all..."
+    task.spawn(function()
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/All/refs/heads/main/README.md"))()
+        end)
+        if ok then ctrlStatus.Text = "تم تشغيل نسخ all"
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
