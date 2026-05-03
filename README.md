@@ -35,8 +35,145 @@ end)
 ----------------------------------------------------------------
 -- Loading splash: SH Zero Protocol (hacker intro)
 ----------------------------------------------------------------
-local function runSplash()
+
+-- ─── نافذة "ما الجديد" تظهر بعد الإنترو ─────────────────────
+local function showWhatsNew()
     local core = game:GetService("CoreGui")
+    local wsg = Instance.new("ScreenGui")
+    wsg.Name = "SH_WhatsNew"
+    wsg.DisplayOrder = 9999998
+    wsg.IgnoreGuiInset = true
+    wsg.ResetOnSpawn = false
+    wsg.Parent = core
+
+    -- خلفية شفافة داكنة
+    local overlay = Instance.new("Frame", wsg)
+    overlay.Size = UDim2.new(1, 0, 1, 0)
+    overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+    overlay.BackgroundTransparency = 0.45
+    overlay.BorderSizePixel = 0
+
+    -- الإطار الرئيسي
+    local card = Instance.new("Frame", wsg)
+    card.Size = UDim2.new(0, 400, 0, 0)
+    card.AnchorPoint = Vector2.new(0.5, 0.5)
+    card.Position = UDim2.new(0.5, 0, 0.5, 0)
+    card.BackgroundColor3 = Color3.fromRGB(6, 18, 10)
+    card.BackgroundTransparency = 0.08
+    card.BorderSizePixel = 0
+    card.AutomaticSize = Enum.AutomaticSize.Y
+    Instance.new("UICorner", card).CornerRadius = UDim.new(0, 16)
+    local cs = Instance.new("UIStroke", card)
+    cs.Color = Color3.fromRGB(0, 230, 110); cs.Thickness = 1.8; cs.Transparency = 0.15
+
+    local cpad = Instance.new("UIPadding", card)
+    cpad.PaddingTop = UDim.new(0, 16); cpad.PaddingBottom = UDim.new(0, 18)
+    cpad.PaddingLeft = UDim.new(0, 18); cpad.PaddingRight = UDim.new(0, 18)
+
+    local layout = Instance.new("UIListLayout", card)
+    layout.Padding = UDim.new(0, 10)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    -- عنوان
+    local titleRow = Instance.new("Frame", card)
+    titleRow.Size = UDim2.new(1, 0, 0, 30)
+    titleRow.BackgroundTransparency = 1
+    titleRow.LayoutOrder = 1
+    local tLayout = Instance.new("UIListLayout", titleRow)
+    tLayout.FillDirection = Enum.FillDirection.Horizontal
+    tLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    tLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+    local titleLbl = Instance.new("TextLabel", titleRow)
+    titleLbl.BackgroundTransparency = 1
+    titleLbl.Font = Enum.Font.GothamBold
+    titleLbl.Text = "✦ ما الجديد؟ ✦"
+    titleLbl.TextSize = 20
+    titleLbl.TextColor3 = Color3.fromRGB(0, 255, 130)
+    titleLbl.AutomaticSize = Enum.AutomaticSize.XY
+
+    -- فاصل
+    local divider = Instance.new("Frame", card)
+    divider.Size = UDim2.new(1, 0, 0, 1)
+    divider.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+    divider.BackgroundTransparency = 0.6
+    divider.BorderSizePixel = 0
+    divider.LayoutOrder = 2
+
+    -- النص الرئيسي
+    local bodyLines = {
+        "١ - إذا غيّرت علامة الادمن راح تتغير",
+        "     تلقائياً في الإعدادات ✓",
+        "",
+        "٢ - تم تبديل النسخ، وإذا ما عجبكم",
+        "     تقدرون تسوون نسخ بنفسكم وتحطونه",
+        "     في السبام، ودايم تأكدون من علامة الأدمن",
+        "",
+        "~ مشاكل بتتصلح قريباً ~",
+        "",
+        "لما تشغّل سكربت السكنات",
+        "خلّي علامة الأدمن:  ;",
+        "",
+        "ولو جيت تنسخ في الشات ارجع",
+        "اقولكككك تأكد من علامة الأدمن 🥴",
+        "",
+        "shhode320 ~~",
+    }
+
+    local bodyLbl = Instance.new("TextLabel", card)
+    bodyLbl.Size = UDim2.new(1, 0, 0, 0)
+    bodyLbl.AutomaticSize = Enum.AutomaticSize.Y
+    bodyLbl.BackgroundTransparency = 1
+    bodyLbl.Font = Enum.Font.GothamSemibold
+    bodyLbl.Text = table.concat(bodyLines, "\n")
+    bodyLbl.TextSize = 14
+    bodyLbl.TextColor3 = Color3.fromRGB(200, 245, 215)
+    bodyLbl.TextXAlignment = Enum.TextXAlignment.Right
+    bodyLbl.TextWrapped = true
+    bodyLbl.RichText = false
+    bodyLbl.LayoutOrder = 3
+
+    -- زر إغلاق
+    local closeBtn = Instance.new("TextButton", card)
+    closeBtn.Size = UDim2.new(1, 0, 0, 36)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 70)
+    closeBtn.BackgroundTransparency = 0.1
+    closeBtn.BorderSizePixel = 0
+    closeBtn.AutoButtonColor = false
+    closeBtn.Font = Enum.Font.GothamBold
+    closeBtn.Text = "فاهمت، يلا نبدأ! 🚀"
+    closeBtn.TextSize = 15
+    closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeBtn.LayoutOrder = 4
+    Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 10)
+    closeBtn.MouseEnter:Connect(function()
+        TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 210, 90)}):Play()
+    end)
+    closeBtn.MouseLeave:Connect(function()
+        TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 160, 70)}):Play()
+    end)
+
+    -- أنيميشن الظهور (AnchorPoint 0.5,0.5 → نبدأ من أسفل قليلاً)
+    card.Position = UDim2.new(0.5, 0, 0.65, 0)
+    card.BackgroundTransparency = 1
+    TweenService:Create(card, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        {Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 0.08}):Play()
+
+    local closed = false
+    local function closeWhatsNew()
+        if closed then return end; closed = true
+        TweenService:Create(card, TweenInfo.new(0.2), {BackgroundTransparency = 1}):Play()
+        TweenService:Create(overlay, TweenInfo.new(0.2), {BackgroundTransparency = 1}):Play()
+        task.delay(0.22, function() pcall(function() wsg:Destroy() end) end)
+    end
+
+    closeBtn.MouseButton1Click:Connect(closeWhatsNew)
+end
+
+-- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
+local function runSplash()
+    local core    = game:GetService("CoreGui")
+    local UIS     = game:GetService("UserInputService")
 
     if core:FindFirstChild("SH_ZeroProtocol") then core.SH_ZeroProtocol:Destroy() end
 
@@ -46,40 +183,75 @@ local function runSplash()
     sg.IgnoreGuiInset = true
     sg.Parent = core
 
-    local bg = Instance.new("Frame")
+    local bg = Instance.new("Frame", sg)
     bg.Size = UDim2.new(1, 0, 1, 0)
     bg.BackgroundColor3 = Color3.new(0, 0, 0)
     bg.BorderSizePixel = 0
-    bg.Parent = sg
+
+    -- نص تلميح التخطي
+    local skipHint = Instance.new("TextLabel", sg)
+    skipHint.Size = UDim2.new(1, 0, 0, 28)
+    skipHint.Position = UDim2.new(0, 0, 1, -36)
+    skipHint.BackgroundTransparency = 1
+    skipHint.Font = Enum.Font.GothamSemibold
+    skipHint.Text = "اضغط مرتين لتخطي الإنترو"
+    skipHint.TextSize = 13
+    skipHint.TextColor3 = Color3.fromRGB(120, 120, 120)
+    skipHint.TextXAlignment = Enum.TextXAlignment.Center
+
+    -- منطق كشف الضغطة المزدوجة عبر UserInputService
+    local skipped = false
+    local lastClick = 0
+    local function doSkip()
+        if skipped then return end
+        skipped = true
+        TweenService:Create(bg, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
+        task.delay(0.32, function()
+            pcall(function() sg:Destroy() end)
+            showWhatsNew()
+        end)
+    end
+
+    local uisConn
+    uisConn = UIS.InputBegan:Connect(function(inp, processed)
+        if inp.UserInputType == Enum.UserInputType.MouseButton1
+           or inp.UserInputType == Enum.UserInputType.Touch then
+            local now = tick()
+            if (now - lastClick) < 0.4 then
+                uisConn:Disconnect()
+                doSkip()
+            end
+            lastClick = now
+        end
+    end)
 
     task.spawn(function()
-        -- [المرحلة 1: تشويه النظام] (0-15 ثانية)
+        -- المرحلة 1: تشويه النظام
         for i = 1, 30 do
-            local line = Instance.new("Frame")
+            if skipped then return end
+            local line = Instance.new("Frame", sg)
             line.Size = UDim2.new(1, 0, 0, 1)
             line.Position = UDim2.new(0, 0, math.random(0, 100)/100, 0)
-            line.BackgroundColor3 = Color3.fromRGB(170, 0, 255) -- أرجواني نيون
+            line.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
             line.BackgroundTransparency = 0.5
             line.BorderSizePixel = 0
-            line.Parent = sg
-            task.delay(0.2, function() line:Destroy() end)
-
+            task.delay(0.2, function() pcall(function() line:Destroy() end) end)
             if i % 5 == 0 then
-                local warn = Instance.new("TextLabel")
+                local warn = Instance.new("TextLabel", sg)
                 warn.Text = "DECRYPTING_SH_FILES..."
                 warn.TextColor3 = Color3.new(0, 1, 0)
                 warn.Font = Enum.Font.Code
                 warn.TextSize = 20
                 warn.BackgroundTransparency = 1
                 warn.Position = UDim2.new(math.random(1, 7)/10, 0, math.random(1, 7)/10, 0)
-                warn.Parent = sg
-                task.delay(0.5, function() warn:Destroy() end)
+                task.delay(0.5, function() pcall(function() warn:Destroy() end) end)
             end
             task.wait(0.1)
         end
 
-        -- [المرحلة 2: ظهور الهوية الرقمية] (15-30 ثانية)
-        local sh_id = Instance.new("TextLabel")
+        -- المرحلة 2: هوية رقمية
+        if skipped then return end
+        local sh_id = Instance.new("TextLabel", sg)
         sh_id.Text = "ID: SH_REDACTED"
         sh_id.TextColor3 = Color3.new(1, 1, 1)
         sh_id.Font = Enum.Font.SpecialElite
@@ -87,21 +259,21 @@ local function runSplash()
         sh_id.BackgroundTransparency = 1
         sh_id.Size = UDim2.new(1, 0, 0, 100)
         sh_id.Position = UDim2.new(0, 0, 0.45, 0)
-        sh_id.Parent = sg
-
-        -- تأثير الاهتزاز الرقمي
         for i = 1, 40 do
+            if skipped then return end
             sh_id.Position = UDim2.new(0, math.random(-5, 5), 0.45, math.random(-5, 5))
             sh_id.Rotation = math.random(-2, 2)
             task.wait(0.05)
         end
+        if skipped then return end
         sh_id.Rotation = 0
         sh_id.Text = "S H"
         sh_id.TextSize = 150
-        sh_id.TextColor3 = Color3.fromRGB(0, 255, 150) -- أخضر مائي
+        sh_id.TextColor3 = Color3.fromRGB(0, 255, 150)
 
-        -- [المرحلة 3: التثبيت والإنهاء] (30-40 ثانية)
-        local status = Instance.new("TextLabel")
+        -- المرحلة 3: الإنهاء
+        if skipped then return end
+        local status = Instance.new("TextLabel", sg)
         status.Text = "ROOT_ACCESS_GRANTED"
         status.TextColor3 = Color3.new(1, 1, 1)
         status.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
@@ -109,10 +281,19 @@ local function runSplash()
         status.TextSize = 25
         status.Size = UDim2.new(0, 300, 0, 40)
         status.Position = UDim2.new(0.5, -150, 0.8, 0)
-        status.Parent = sg
+        for i = 1, 50 do
+            if skipped then return end
+            task.wait(0.1)
+        end
 
-        task.wait(10)
-        sg:Destroy()
+        -- إغلاق طبيعي
+        if not skipped then
+            skipped = true
+            TweenService:Create(bg, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
+            task.wait(0.42)
+            pcall(function() sg:Destroy() end)
+            showWhatsNew()
+        end
     end)
 end
 pcall(runSplash)
@@ -642,7 +823,7 @@ end
 ----------------------------------------------------------------
 -- Remotes
 ----------------------------------------------------------------
-local chatRemote, hdRemote
+local chatRemote, hdRemote, changeSettingRemote
 pcall(function()
     local re = ReplicatedStorage:FindFirstChild("RemoteEvents")
     if re then chatRemote = re:FindFirstChild("ChatEvent") end
@@ -651,8 +832,41 @@ pcall(function()
     local hd = ReplicatedStorage:FindFirstChild("HDAdminHDClient")
     if hd then
         local sig = hd:FindFirstChild("Signals")
-        if sig then hdRemote = sig:FindFirstChild("RequestCommandModification") end
+        if sig then
+            hdRemote            = sig:FindFirstChild("RequestCommandModification")
+            changeSettingRemote = sig:FindFirstChild("ChangeSetting")
+        end
     end
+end)
+
+-- تغيير علامة الأدمن في HDAdmin تلقائياً لما تتغير في الصندوق
+local function applyPrefix(newPrefix)
+    if newPrefix == "" then newPrefix = ";" end
+    pcall(function()
+        if changeSettingRemote then
+            local args = {[1] = {[1] = "Prefix", [2] = newPrefix}}
+            changeSettingRemote:InvokeServer(unpack(args))
+        else
+            -- fallback: ابحث عن الريموت مباشرة
+            local sig = game:GetService("ReplicatedStorage")
+                :FindFirstChild("HDAdminHDClient")
+                :FindFirstChild("Signals")
+            if sig then
+                local r = sig:FindFirstChild("ChangeSetting")
+                if r then
+                    local args = {[1] = {[1] = "Prefix", [2] = newPrefix}}
+                    r:InvokeServer(unpack(args))
+                end
+            end
+        end
+    end)
+    setStatus("✓ علامة الأدمن: " .. newPrefix)
+end
+
+prefixBox.FocusLost:Connect(function()
+    local val = prefixBox.Text
+    if val == "" then val = ";" prefixBox.Text = ";" end
+    applyPrefix(val)
 end)
 
 local function sendOnce(message)
