@@ -421,10 +421,152 @@ local function makeBigBtn(parent, text, posY, color1, color2)
     return b
 end
 
-local copySpamBtn   = makeBigBtn(copyPage, "نسخ سبام", 88)
-local copyStrongBtn = makeBigBtn(copyPage, "نسخ قوي سبام", 142)
-local stopBtn       = makeBigBtn(copyPage, "إيقاف السبام", 196,
-    Color3.fromRGB(170, 30, 30), Color3.fromRGB(110, 15, 15))
+-- حقل علامة الأدمن
+local prefixRow = Instance.new("Frame", copyPage)
+prefixRow.BackgroundTransparency = 1
+prefixRow.Position = UDim2.new(0, 10, 0, 84); prefixRow.Size = UDim2.new(1, -20, 0, 36)
+
+local prefixBox = Instance.new("TextBox", prefixRow)
+prefixBox.Size = UDim2.new(0, 48, 1, 0); prefixBox.Position = UDim2.new(0, 0, 0, 0)
+prefixBox.BackgroundColor3 = Color3.fromRGB(20, 80, 180); prefixBox.BackgroundTransparency = 0.15
+prefixBox.BorderSizePixel = 0; prefixBox.Text = ";"
+prefixBox.PlaceholderText = ";"
+prefixBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+prefixBox.Font = Enum.Font.GothamBold; prefixBox.TextSize = 18
+prefixBox.ClearTextOnFocus = false
+Instance.new("UICorner", prefixBox).CornerRadius = UDim.new(0, 8)
+local pbStroke = Instance.new("UIStroke", prefixBox)
+pbStroke.Color = Color3.fromRGB(80, 160, 255); pbStroke.Thickness = 1.5; pbStroke.Transparency = 0.2
+
+local prefixLabel = Instance.new("TextLabel", prefixRow)
+prefixLabel.BackgroundTransparency = 1
+prefixLabel.Position = UDim2.new(0, 56, 0, 0); prefixLabel.Size = UDim2.new(1, -56, 1, 0)
+prefixLabel.Font = Enum.Font.GothamSemibold; prefixLabel.TextSize = 13
+prefixLabel.TextColor3 = Color3.fromRGB(160, 210, 255)
+prefixLabel.TextXAlignment = Enum.TextXAlignment.Left
+prefixLabel.Text = "اكتب علامة الادمن الخاصة بك"
+
+-- ┌─────────────────────────────────────────────────────────┐
+-- │  ScrollingFrame لخانة النسخ - يمنع خروج الأزرار        │
+-- └─────────────────────────────────────────────────────────┘
+local spamScroll = Instance.new("ScrollingFrame", copyPage)
+spamScroll.Position = UDim2.new(0, 0, 0, 124)
+spamScroll.Size = UDim2.new(1, 0, 1, -152)
+spamScroll.BackgroundTransparency = 1
+spamScroll.BorderSizePixel = 0
+spamScroll.ScrollBarThickness = 4
+spamScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 130)
+spamScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+spamScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+local spamList = Instance.new("UIListLayout", spamScroll)
+spamList.Padding = UDim.new(0, 6)
+spamList.SortOrder = Enum.SortOrder.LayoutOrder
+local spamPad = Instance.new("UIPadding", spamScroll)
+spamPad.PaddingTop = UDim.new(0, 4)
+spamPad.PaddingBottom = UDim.new(0, 4)
+spamPad.PaddingLeft = UDim.new(0, 6)
+spamPad.PaddingRight = UDim.new(0, 6)
+
+local function makeSpamRow(order)
+    local row = Instance.new("Frame", spamScroll)
+    row.Size = UDim2.new(1, 0, 0, 42)
+    row.BackgroundTransparency = 1
+    row.LayoutOrder = order
+    return row
+end
+
+-- تسمية (label) على اليسار - مجرد نص، ما تضغط
+local function makeRowLabel(parent, text)
+    local lbl = Instance.new("TextLabel", parent)
+    lbl.Position = UDim2.new(0, 0, 0, 0)
+    lbl.Size = UDim2.new(0.34, -4, 1, 0)
+    lbl.BackgroundColor3 = Color3.fromRGB(8, 25, 14)
+    lbl.BackgroundTransparency = 0.3
+    lbl.BorderSizePixel = 0
+    lbl.Font = Enum.Font.GothamBold
+    lbl.Text = text
+    lbl.TextSize = 14
+    lbl.TextColor3 = Color3.fromRGB(200, 255, 215)
+    lbl.TextXAlignment = Enum.TextXAlignment.Center
+    Instance.new("UICorner", lbl).CornerRadius = UDim.new(0, 10)
+    return lbl
+end
+
+-- زر تشغيل: احمر لما طافي، اخضر لما شغال
+local function makeStartBtn(parent)
+    local b = Instance.new("TextButton", parent)
+    b.Position = UDim2.new(0.35, 2, 0, 0)
+    b.Size = UDim2.new(0.33, -2, 1, 0)
+    b.BackgroundColor3 = Color3.fromRGB(180, 25, 25)   -- احمر = طافي
+    b.BackgroundTransparency = 0.05
+    b.BorderSizePixel = 0; b.AutoButtonColor = false
+    b.Font = Enum.Font.GothamBold
+    b.Text = "تشغيل"
+    b.TextSize = 14
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
+    local s = Instance.new("UIStroke", b)
+    s.Color = Color3.fromRGB(255, 80, 80)
+    s.Transparency = 0.2; s.Thickness = 1.8
+    return b
+end
+
+-- زر ايقاف: رمادي داكن ثابت
+local function makeStopBtn(parent)
+    local b = Instance.new("TextButton", parent)
+    b.Position = UDim2.new(0.69, 3, 0, 0)
+    b.Size = UDim2.new(0.31, -3, 1, 0)
+    b.BackgroundColor3 = Color3.fromRGB(55, 55, 65)
+    b.BackgroundTransparency = 0.05
+    b.BorderSizePixel = 0; b.AutoButtonColor = false
+    b.Font = Enum.Font.GothamBold
+    b.Text = "ايقاف"
+    b.TextSize = 14
+    b.TextColor3 = Color3.fromRGB(210, 210, 225)
+    Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
+    b.MouseEnter:Connect(function() TweenService:Create(b, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(80, 80, 95)}):Play() end)
+    b.MouseLeave:Connect(function() TweenService:Create(b, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(55, 55, 65)}):Play() end)
+    return b
+end
+
+-- تغيير لون زر التشغيل
+local function setStartOn(btn)
+    TweenService:Create(btn, TweenInfo.new(0.18), {BackgroundColor3 = Color3.fromRGB(0, 190, 75)}):Play()
+    local s = btn:FindFirstChildOfClass("UIStroke")
+    if s then s.Color = Color3.fromRGB(0, 255, 130) end
+    btn.Text = "شغال ✓"
+end
+local function setStartOff(btn)
+    TweenService:Create(btn, TweenInfo.new(0.18), {BackgroundColor3 = Color3.fromRGB(180, 25, 25)}):Play()
+    local s = btn:FindFirstChildOfClass("UIStroke")
+    if s then s.Color = Color3.fromRGB(255, 80, 80) end
+    btn.Text = "تشغيل"
+end
+
+-- الصف الأول: سبام
+local rowA = makeSpamRow(1)
+makeRowLabel(rowA, "سبام")
+local copySpamBtn = makeStartBtn(rowA)
+local stopBtnA    = makeStopBtn(rowA)
+
+-- الصف الثاني: Logs
+local rowB = makeSpamRow(2)
+makeRowLabel(rowB, "Logs")
+local copyLogsBtn = makeStartBtn(rowB)
+local stopBtnB    = makeStopBtn(rowB)
+
+-- الصف الثالث: Re
+local rowC = makeSpamRow(3)
+makeRowLabel(rowC, "Re")
+local copyReBtn = makeStartBtn(rowC)
+local stopBtnC  = makeStopBtn(rowC)
+
+-- الصف الرابع: ⚡ سبام قوي
+local rowD = makeSpamRow(4)
+makeRowLabel(rowD, "⚡ سبام قوي")
+local copyPowerBtn = makeStartBtn(rowD)
+local stopBtnD     = makeStopBtn(rowD)
+
 
 local statusLbl = Instance.new("TextLabel", copyPage)
 statusLbl.BackgroundTransparency = 1
@@ -443,25 +585,59 @@ local function setStatus(txt, persistent)
     end
 end
 
--- Build single-message spam strings
-local function buildSpamA(name)
-    local block = string.format(";logs %s ;clogs %s ;nv %s ;re %s ;res %s",
-        name, name, name, name, name)
+-- حماية ضد النسخ لصاحب السكربت
+local function checkBlockedPlayer(name)
+    if name == "shhode320" then return true end
+    return false
+end
+
+-- Build spam commands
+local function buildLogsCmd(name, prefix)
+    prefix = prefix or ";"
     local parts = {}
-    for i = 1, 5 do parts[i] = block end
+    for i = 1, 26 do parts[i] = prefix.."logs "..name end
     return table.concat(parts, " ")
 end
 
-local function buildSpamB(name)
+local function buildReCmd(name, prefix)
+    prefix = prefix or ";"
+    local parts = {}
+    for i = 1, 26 do parts[i] = prefix.."re "..name end
+    return table.concat(parts, " ")
+end
+
+local function buildSpamA(name, prefix)
+    prefix = prefix or ";"
+    local parts = {}
+    for i = 1, 10 do
+        parts[i] = prefix.."logs "..name.." "..prefix.."nv "..name.." "..prefix.."re "..name
+    end
+    return table.concat(parts, " ")
+end
+
+local function buildPowerSpam(name, prefix)
+    prefix = prefix or ";"
     local cmds = {
-        ";apparate %s inf",";fling %s",";jp %s inf",";jc %s",
-        ";ice %s",";emotes %s",";phase %s",";cmdbar %s",
-        ";nv %s",";jump %s",";re %s",";res %s",";kill %s",";ping %s",
+        "apparate "..name.." inf",
+        "fling "..name,
+        "jp "..name.." inf",
+        "jc "..name,
+        "ice "..name,
+        "emotes "..name,
+        "phase "..name,
+        "cmdbar "..name,
+        "nv "..name,
+        "jump "..name,
+        "re "..name,
+        "res "..name,
+        "kill "..name,
+        "ping "..name,
     }
     local out = {}
-    for i, fmt in ipairs(cmds) do out[i] = string.format(fmt, name) end
+    for i, c in ipairs(cmds) do out[i] = prefix..c end
     return table.concat(out, " ")
 end
+
 
 ----------------------------------------------------------------
 -- Remotes
@@ -516,19 +692,71 @@ local function startSpam(message)
     end)
 end
 
+-- ── helpers لتوحيد منطق التشغيل والإيقاف ─────────────────────
+local spamARunning     = false
+local logsSpamRunning  = false
+local reSpamRunning    = false
+local powerSpamRunning = false
+
+local function doStop(runFlag, startBtn)
+    stopSpam()
+    if startBtn then setStartOff(startBtn) end
+    return false
+end
+
+-- ── سبام ────────────────────────────────────────────────────
 copySpamBtn.MouseButton1Click:Connect(function()
+    if spamARunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local msg = buildSpamA(selectedName)
-    startSpam(msg)
+    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
+    startSpam(buildSpamA(selectedName, prefix))
+    spamARunning = true; setStartOn(copySpamBtn)
+end)
+stopBtnA.MouseButton1Click:Connect(function()
+    if spamARunning then spamARunning = doStop(spamARunning, copySpamBtn) end
 end)
 
-copyStrongBtn.MouseButton1Click:Connect(function()
+-- ── Logs ─────────────────────────────────────────────────────
+copyLogsBtn.MouseButton1Click:Connect(function()
+    if logsSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local msg = buildSpamB(selectedName)
-    startSpam(msg)
+    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
+    startSpam(buildLogsCmd(selectedName, prefix))
+    logsSpamRunning = true; setStartOn(copyLogsBtn)
+end)
+stopBtnB.MouseButton1Click:Connect(function()
+    if logsSpamRunning then logsSpamRunning = doStop(logsSpamRunning, copyLogsBtn) end
 end)
 
-stopBtn.MouseButton1Click:Connect(function() stopSpam() end)
+-- ── Re ───────────────────────────────────────────────────────
+copyReBtn.MouseButton1Click:Connect(function()
+    if reSpamRunning then return end
+    if not selectedName then setStatus("اختر لاعب اولا") return end
+    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
+    startSpam(buildReCmd(selectedName, prefix))
+    reSpamRunning = true; setStartOn(copyReBtn)
+end)
+stopBtnC.MouseButton1Click:Connect(function()
+    if reSpamRunning then reSpamRunning = doStop(reSpamRunning, copyReBtn) end
+end)
+
+-- ── سبام قوي ─────────────────────────────────────────────────
+copyPowerBtn.MouseButton1Click:Connect(function()
+    if powerSpamRunning then return end
+    if not selectedName then setStatus("اختر لاعب اولا") return end
+    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
+    startSpam(buildPowerSpam(selectedName, prefix))
+    powerSpamRunning = true; setStartOn(copyPowerBtn)
+end)
+stopBtnD.MouseButton1Click:Connect(function()
+    if powerSpamRunning then powerSpamRunning = doStop(powerSpamRunning, copyPowerBtn) end
+end)
+
+
 
 ----------------------------------------------------------------
 -- Page: تحكم
