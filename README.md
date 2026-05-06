@@ -33,6 +33,114 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
+-- حماية القائمين – منع إرسال أي أمر يستهدفهم
+----------------------------------------------------------------
+local PROTECTED_ACCOUNTS = {
+    {name = "shhode320",           msg = "⛔ لا يمكن نسخ المصممه"},
+    {name = "love1c_omar",         msg = "⛔ لا يمكن نسخ النائب"},
+    {name = "naeenalnatour332016", msg = "⛔ لا يمكن نسخ النائب"},
+}
+
+local function showProtectNotif(message)
+    pcall(function()
+        local pg = Instance.new("ScreenGui")
+        pg.Name = "SH_ProtectNotif"
+        pg.DisplayOrder = 99999999
+        pg.IgnoreGuiInset = true
+        pg.ResetOnSpawn = false
+        pcall(function() pg.Parent = CoreGui end)
+        if not pg.Parent then pg.Parent = PlayerGui end
+
+        local f = Instance.new("Frame", pg)
+        f.AnchorPoint = Vector2.new(0.5, 0)
+        f.Position = UDim2.new(0.5, 0, 0, 20)
+        f.Size = UDim2.new(0, 380, 0, 72)
+        f.BackgroundColor3 = Color3.fromRGB(110, 0, 0)
+        f.BackgroundTransparency = 1
+        f.BorderSizePixel = 0
+        Instance.new("UICorner", f).CornerRadius = UDim.new(0, 14)
+        local fs = Instance.new("UIStroke", f)
+        fs.Color = Color3.fromRGB(255, 60, 60); fs.Thickness = 2; fs.Transparency = 1
+
+        local icon = Instance.new("TextLabel", f)
+        icon.BackgroundTransparency = 1
+        icon.Position = UDim2.new(0, 10, 0, 0); icon.Size = UDim2.new(0, 44, 1, 0)
+        icon.Font = Enum.Font.GothamBlack; icon.Text = "🚫"
+        icon.TextSize = 30; icon.TextXAlignment = Enum.TextXAlignment.Center
+        icon.TextTransparency = 1
+
+        local lbl = Instance.new("TextLabel", f)
+        lbl.BackgroundTransparency = 1
+        lbl.Position = UDim2.new(0, 58, 0, 0); lbl.Size = UDim2.new(1, -68, 1, 0)
+        lbl.Font = Enum.Font.GothamBold; lbl.Text = message
+        lbl.TextSize = 18; lbl.TextColor3 = Color3.fromRGB(255, 200, 200)
+        lbl.TextXAlignment = Enum.TextXAlignment.Right
+        lbl.TextWrapped = true; lbl.TextTransparency = 1
+
+        TweenService:Create(f, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Position = UDim2.new(0.5, 0, 0, 60), BackgroundTransparency = 0.1}):Play()
+        TweenService:Create(fs, TweenInfo.new(0.3), {Transparency = 0.1}):Play()
+        TweenService:Create(lbl, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
+        TweenService:Create(icon, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
+
+        task.delay(3.2, function()
+            pcall(function()
+                TweenService:Create(f,   TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
+                TweenService:Create(fs,  TweenInfo.new(0.4), {Transparency = 1}):Play()
+                TweenService:Create(lbl, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+                TweenService:Create(icon,TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+                task.wait(0.45)
+                pg:Destroy()
+            end)
+        end)
+    end)
+end
+
+local function detectProtected(text)
+    if type(text) ~= "string" then return nil end
+    local lower = text:lower()
+    for word in lower:gmatch("%S+") do
+        if #word >= 2 then
+            for _, p in ipairs(PROTECTED_ACCOUNTS) do
+                if p.name:lower():sub(1, #word) == word then
+                    return p.msg
+                end
+            end
+        end
+    end
+    return nil
+end
+
+-- اعتراض الريموتات (hookmetamethod – يشتغل على Delta/Synapse/Fluxus)
+pcall(function()
+    if not hookmetamethod then return end
+    local oldNC
+    oldNC = hookmetamethod(game, "__namecall", function(self, ...)
+        local method = getnamecallmethod()
+        if method == "FireServer" or method == "InvokeServer" then
+            for _, v in ipairs({...}) do
+                local blocked = detectProtected(tostring(v))
+                if blocked then
+                    showProtectNotif(blocked)
+                    return
+                end
+            end
+        end
+        return oldNC(self, ...)
+    end)
+end)
+
+-- نسخة احتياطية: مراقبة شات اللاعب
+pcall(function()
+    LocalPlayer.Chatted:Connect(function(msg)
+        local blocked = detectProtected(msg)
+        if blocked then
+            showProtectNotif(blocked)
+        end
+    end)
+end)
+
+----------------------------------------------------------------
 -- Loading splash: SH Zero Protocol (hacker intro)
 ----------------------------------------------------------------
 
@@ -759,10 +867,15 @@ local function setStatus(txt, persistent)
     end
 end
 
--- حماية ضد النسخ لصاحب السكربت
+-- حماية ضد النسخ للقائمين (يُستخدم في أزرار الواجهة)
 local function checkBlockedPlayer(name)
-    if name == "shhode320" then return true end
-    return false
+    local lower = (name or ""):lower()
+    for _, p in ipairs(PROTECTED_ACCOUNTS) do
+        if p.name:lower() == lower then
+            return true, p.msg
+        end
+    end
+    return false, nil
 end
 
 -- Build spam commands
@@ -915,7 +1028,8 @@ end
 copySpamBtn.MouseButton1Click:Connect(function()
     if spamARunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local blocked, bMsg = checkBlockedPlayer(selectedName)
+    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildSpamA(selectedName, prefix))
     spamARunning = true; setStartOn(copySpamBtn)
@@ -928,7 +1042,8 @@ end)
 copyLogsBtn.MouseButton1Click:Connect(function()
     if logsSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local blocked, bMsg = checkBlockedPlayer(selectedName)
+    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildLogsCmd(selectedName, prefix))
     logsSpamRunning = true; setStartOn(copyLogsBtn)
@@ -941,7 +1056,8 @@ end)
 copyReBtn.MouseButton1Click:Connect(function()
     if reSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local blocked, bMsg = checkBlockedPlayer(selectedName)
+    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildReCmd(selectedName, prefix))
     reSpamRunning = true; setStartOn(copyReBtn)
@@ -954,7 +1070,8 @@ end)
 copyPowerBtn.MouseButton1Click:Connect(function()
     if powerSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    if checkBlockedPlayer(selectedName) then setStatus("ممنوع تنسخ صاحبة السكربت ✋😜") return end
+    local blocked, bMsg = checkBlockedPlayer(selectedName)
+    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildPowerSpam(selectedName, prefix))
     powerSpamRunning = true; setStartOn(copyPowerBtn)
