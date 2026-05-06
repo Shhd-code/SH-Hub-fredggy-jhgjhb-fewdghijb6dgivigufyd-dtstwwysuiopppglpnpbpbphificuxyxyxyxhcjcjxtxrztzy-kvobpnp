@@ -102,22 +102,15 @@ local function showWhatsNew()
 
     -- النص الرئيسي
     local bodyLines = {
-        "١ - إذا غيّرت علامة الادمن راح تتغير",
-        "     تلقائياً في الإعدادات ✓",
+        "تمت اضافه نسخه من سكربت بلو",
+        "لتسهيل النسخ عليكم",
+        "موجود في خانة التحكم",
         "",
-        "٢ - تم تبديل النسخ، وإذا ما عجبكم",
-        "     تقدرون تسوون نسخ بنفسكم وتحطونه",
-        "     في السبام، ودايم تأكدون من علامة الأدمن",
+        "......",
         "",
-        "~ مشاكل بتتصلح قريباً ~",
+        "القادم أفضل أن شاء الله 😌🤞",
         "",
-        "لما تشغّل سكربت السكنات",
-        "خلّي علامة الأدمن:  ;",
-        "",
-        "ولو جيت تنسخ في الشات ارجع",
-        "اقولكككك تأكد من علامة الأدمن 🥴",
-        "",
-        "shhode320 ~~",
+        "shhode320~",
     }
 
     local bodyLbl = Instance.new("TextLabel", card)
@@ -1013,6 +1006,8 @@ local titleBtn     = makeBigBtn(ctrlScroll, "تحكم في اللقب", 436,
     Color3.fromRGB(170, 70, 220), Color3.fromRGB(100, 30, 150))
 local allBtn       = makeBigBtn(ctrlScroll, "نسخ all", 490,
     Color3.fromRGB(30, 180, 255), Color3.fromRGB(10, 100, 180))
+local blueBtn      = makeBigBtn(ctrlScroll, "نسخه معدلة من سكربت بلو", 544,
+    Color3.fromRGB(0, 120, 255), Color3.fromRGB(0, 60, 160))
 
 local ctrlStatus = Instance.new("TextLabel", controlPage)
 ctrlStatus.BackgroundTransparency = 1
@@ -1548,6 +1543,19 @@ allBtn.MouseButton1Click:Connect(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/All/refs/heads/main/README.md"))()
         end)
         if ok then ctrlStatus.Text = "تم تشغيل نسخ all"
+        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
+    end)
+end)
+
+local blueLoaded = false
+blueBtn.MouseButton1Click:Connect(function()
+    if blueLoaded then ctrlStatus.Text = "نسخه معدلة من سكربت بلو مفعلة بالفعل" return end
+    ctrlStatus.Text = "جاري تشغيل نسخه معدلة من سكربت بلو..."
+    task.spawn(function()
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Blsh/refs/heads/main/README.md"))()
+        end)
+        if ok then blueLoaded = true; ctrlStatus.Text = "تم تشغيل نسخه معدلة من سكربت بلو"
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
