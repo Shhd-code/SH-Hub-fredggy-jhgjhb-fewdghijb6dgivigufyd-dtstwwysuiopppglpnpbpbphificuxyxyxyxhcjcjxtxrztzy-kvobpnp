@@ -33,111 +33,184 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- حماية القائمين – منع إرسال أي أمر يستهدفهم
+-- إشعار فريق SH Hub – يظهر بعد دقيقتين من تشغيل السكربت
 ----------------------------------------------------------------
-local PROTECTED_ACCOUNTS = {
-    {name = "shhode320",           msg = "⛔ لا يمكن نسخ المصممه"},
-    {name = "love1c_omar",         msg = "⛔ لا يمكن نسخ النائب"},
-    {name = "naeenalnatour332016", msg = "⛔ لا يمكن نسخ النائب"},
-}
+local function getAvatar(username)
+    local ok1, uid = pcall(function()
+        return Players:GetUserIdFromNameAsync(username)
+    end)
+    if not ok1 then return "" end
+    local ok2, url = pcall(function()
+        return Players:GetUserThumbnailAsync(uid, Enum.ThumbnailType.AvatarBust, Enum.ThumbnailSize.Size420x420)
+    end)
+    return ok2 and url or ""
+end
 
-local function showProtectNotif(message)
+local function showTeamCard()
     pcall(function()
-        local pg = Instance.new("ScreenGui")
-        pg.Name = "SH_ProtectNotif"
-        pg.DisplayOrder = 99999999
-        pg.IgnoreGuiInset = true
-        pg.ResetOnSpawn = false
-        pcall(function() pg.Parent = CoreGui end)
-        if not pg.Parent then pg.Parent = PlayerGui end
+        local sg = Instance.new("ScreenGui")
+        sg.Name = "SH_TeamCard"
+        sg.DisplayOrder = 9999997
+        sg.IgnoreGuiInset = true
+        sg.ResetOnSpawn = false
+        pcall(function() sg.Parent = CoreGui end)
+        if not sg.Parent then sg.Parent = PlayerGui end
 
-        local f = Instance.new("Frame", pg)
-        f.AnchorPoint = Vector2.new(0.5, 0)
-        f.Position = UDim2.new(0.5, 0, 0, 20)
-        f.Size = UDim2.new(0, 380, 0, 72)
-        f.BackgroundColor3 = Color3.fromRGB(110, 0, 0)
-        f.BackgroundTransparency = 1
-        f.BorderSizePixel = 0
-        Instance.new("UICorner", f).CornerRadius = UDim.new(0, 14)
-        local fs = Instance.new("UIStroke", f)
-        fs.Color = Color3.fromRGB(255, 60, 60); fs.Thickness = 2; fs.Transparency = 1
+        -- خلفية شفافة
+        local overlay = Instance.new("Frame", sg)
+        overlay.Size = UDim2.new(1, 0, 1, 0)
+        overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+        overlay.BackgroundTransparency = 0.5
+        overlay.BorderSizePixel = 0
 
-        local icon = Instance.new("TextLabel", f)
-        icon.BackgroundTransparency = 1
-        icon.Position = UDim2.new(0, 10, 0, 0); icon.Size = UDim2.new(0, 44, 1, 0)
-        icon.Font = Enum.Font.GothamBlack; icon.Text = "🚫"
-        icon.TextSize = 30; icon.TextXAlignment = Enum.TextXAlignment.Center
-        icon.TextTransparency = 1
+        -- البطاقة الرئيسية
+        local card = Instance.new("Frame", sg)
+        card.Size = UDim2.new(0, 340, 0, 0)
+        card.AnchorPoint = Vector2.new(0.5, 0.5)
+        card.Position = UDim2.new(0.5, 0, 0.65, 0)
+        card.BackgroundColor3 = Color3.fromRGB(5, 10, 20)
+        card.BackgroundTransparency = 0.05
+        card.BorderSizePixel = 0
+        card.AutomaticSize = Enum.AutomaticSize.Y
+        Instance.new("UICorner", card).CornerRadius = UDim.new(0, 18)
+        local stroke = Instance.new("UIStroke", card)
+        stroke.Color = Color3.fromRGB(0, 200, 255)
+        stroke.Thickness = 1.8
+        stroke.Transparency = 0.2
 
-        local lbl = Instance.new("TextLabel", f)
-        lbl.BackgroundTransparency = 1
-        lbl.Position = UDim2.new(0, 58, 0, 0); lbl.Size = UDim2.new(1, -68, 1, 0)
-        lbl.Font = Enum.Font.GothamBold; lbl.Text = message
-        lbl.TextSize = 18; lbl.TextColor3 = Color3.fromRGB(255, 200, 200)
-        lbl.TextXAlignment = Enum.TextXAlignment.Right
-        lbl.TextWrapped = true; lbl.TextTransparency = 1
+        local pad = Instance.new("UIPadding", card)
+        pad.PaddingTop    = UDim.new(0, 16)
+        pad.PaddingBottom = UDim.new(0, 20)
+        pad.PaddingLeft   = UDim.new(0, 16)
+        pad.PaddingRight  = UDim.new(0, 16)
 
-        TweenService:Create(f, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-            {Position = UDim2.new(0.5, 0, 0, 60), BackgroundTransparency = 0.1}):Play()
-        TweenService:Create(fs, TweenInfo.new(0.3), {Transparency = 0.1}):Play()
-        TweenService:Create(lbl, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
-        TweenService:Create(icon, TweenInfo.new(0.3), {TextTransparency = 0}):Play()
+        local layout = Instance.new("UIListLayout", card)
+        layout.Padding = UDim.new(0, 14)
+        layout.SortOrder = Enum.SortOrder.LayoutOrder
+        layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-        task.delay(3.2, function()
-            pcall(function()
-                TweenService:Create(f,   TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
-                TweenService:Create(fs,  TweenInfo.new(0.4), {Transparency = 1}):Play()
-                TweenService:Create(lbl, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
-                TweenService:Create(icon,TweenInfo.new(0.4), {TextTransparency = 1}):Play()
-                task.wait(0.45)
-                pg:Destroy()
-            end)
+        -- عنوان البطاقة
+        local title = Instance.new("TextLabel", card)
+        title.Size = UDim2.new(1, 0, 0, 26)
+        title.BackgroundTransparency = 1
+        title.Font = Enum.Font.GothamBold
+        title.Text = "✦ فريق SH Hub ✦"
+        title.TextSize = 17
+        title.TextColor3 = Color3.fromRGB(0, 210, 255)
+        title.TextXAlignment = Enum.TextXAlignment.Center
+        title.LayoutOrder = 1
+
+        -- فاصل
+        local div = Instance.new("Frame", card)
+        div.Size = UDim2.new(1, 0, 0, 1)
+        div.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
+        div.BackgroundTransparency = 0.5
+        div.BorderSizePixel = 0
+        div.LayoutOrder = 2
+
+        -- دالة إنشاء بطاقة شخص
+        local function makePersonCard(username, roleText, order)
+            local avatarUrl = getAvatar(username)
+
+            local row = Instance.new("Frame", card)
+            row.Size = UDim2.new(1, 0, 0, 90)
+            row.BackgroundColor3 = Color3.fromRGB(10, 20, 35)
+            row.BackgroundTransparency = 0.3
+            row.BorderSizePixel = 0
+            row.LayoutOrder = order
+            Instance.new("UICorner", row).CornerRadius = UDim.new(0, 12)
+
+            -- الصورة
+            local img = Instance.new("ImageLabel", row)
+            img.Size = UDim2.new(0, 72, 0, 72)
+            img.Position = UDim2.new(0, 10, 0.5, -36)
+            img.BackgroundColor3 = Color3.fromRGB(20, 30, 50)
+            img.BorderSizePixel = 0
+            img.Image = avatarUrl
+            Instance.new("UICorner", img).CornerRadius = UDim.new(0, 36)
+            local imgStroke = Instance.new("UIStroke", img)
+            imgStroke.Color = Color3.fromRGB(0, 200, 255)
+            imgStroke.Thickness = 2
+            imgStroke.Transparency = 0.1
+
+            -- اسم الحساب
+            local nameLbl = Instance.new("TextLabel", row)
+            nameLbl.Size = UDim2.new(1, -96, 0, 32)
+            nameLbl.Position = UDim2.new(0, 90, 0.5, -30)
+            nameLbl.BackgroundTransparency = 1
+            nameLbl.Font = Enum.Font.GothamBold
+            nameLbl.Text = "@" .. username
+            nameLbl.TextSize = 14
+            nameLbl.TextColor3 = Color3.fromRGB(220, 240, 255)
+            nameLbl.TextXAlignment = Enum.TextXAlignment.Right
+
+            -- الدور
+            local roleLbl = Instance.new("TextLabel", row)
+            roleLbl.Size = UDim2.new(1, -96, 0, 28)
+            roleLbl.Position = UDim2.new(0, 90, 0.5, 4)
+            roleLbl.BackgroundTransparency = 1
+            roleLbl.Font = Enum.Font.GothamSemibold
+            roleLbl.Text = roleText
+            roleLbl.TextSize = 13
+            roleLbl.TextColor3 = Color3.fromRGB(0, 210, 255)
+            roleLbl.TextXAlignment = Enum.TextXAlignment.Right
+        end
+
+        -- المصممه
+        makePersonCard("shhode320", "👑 المصممه", 3)
+
+        -- فاصل خفيف
+        local div2 = Instance.new("Frame", card)
+        div2.Size = UDim2.new(0.85, 0, 0, 1)
+        div2.BackgroundColor3 = Color3.fromRGB(100, 120, 150)
+        div2.BackgroundTransparency = 0.6
+        div2.BorderSizePixel = 0
+        div2.LayoutOrder = 4
+
+        -- نائبا المصممه
+        makePersonCard("love1c_omar",         "🌙 نائب المصممه", 5)
+        makePersonCard("naeenalnatour332016",  "🌙 نائب المصممه", 6)
+
+        -- زر إغلاق
+        local closeBtn = Instance.new("TextButton", card)
+        closeBtn.Size = UDim2.new(1, 0, 0, 34)
+        closeBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 200)
+        closeBtn.BackgroundTransparency = 0.1
+        closeBtn.BorderSizePixel = 0
+        closeBtn.AutoButtonColor = false
+        closeBtn.Font = Enum.Font.GothamBold
+        closeBtn.Text = "حسناً 👍"
+        closeBtn.TextSize = 14
+        closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        closeBtn.LayoutOrder = 7
+        Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 10)
+        closeBtn.MouseEnter:Connect(function()
+            TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 180, 255)}):Play()
         end)
+        closeBtn.MouseLeave:Connect(function()
+            TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 140, 200)}):Play()
+        end)
+
+        -- أنيميشن الظهور
+        card.BackgroundTransparency = 1
+        overlay.BackgroundTransparency = 1
+        TweenService:Create(overlay, TweenInfo.new(0.3), {BackgroundTransparency = 0.5}):Play()
+        TweenService:Create(card, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 0.05}):Play()
+
+        local function closeCard()
+            TweenService:Create(card,    TweenInfo.new(0.25), {BackgroundTransparency = 1}):Play()
+            TweenService:Create(overlay, TweenInfo.new(0.25), {BackgroundTransparency = 1}):Play()
+            task.delay(0.28, function() pcall(function() sg:Destroy() end) end)
+        end
+
+        closeBtn.MouseButton1Click:Connect(closeCard)
     end)
 end
 
-local function detectProtected(text)
-    if type(text) ~= "string" then return nil end
-    local lower = text:lower()
-    for word in lower:gmatch("%S+") do
-        if #word >= 2 then
-            for _, p in ipairs(PROTECTED_ACCOUNTS) do
-                if p.name:lower():sub(1, #word) == word then
-                    return p.msg
-                end
-            end
-        end
-    end
-    return nil
-end
-
--- اعتراض الريموتات (hookmetamethod – يشتغل على Delta/Synapse/Fluxus)
-pcall(function()
-    if not hookmetamethod then return end
-    local oldNC
-    oldNC = hookmetamethod(game, "__namecall", function(self, ...)
-        local method = getnamecallmethod()
-        if method == "FireServer" or method == "InvokeServer" then
-            for _, v in ipairs({...}) do
-                local blocked = detectProtected(tostring(v))
-                if blocked then
-                    showProtectNotif(blocked)
-                    return
-                end
-            end
-        end
-        return oldNC(self, ...)
-    end)
-end)
-
--- نسخة احتياطية: مراقبة شات اللاعب
-pcall(function()
-    LocalPlayer.Chatted:Connect(function(msg)
-        local blocked = detectProtected(msg)
-        if blocked then
-            showProtectNotif(blocked)
-        end
-    end)
+-- تشغيل الإشعار بعد دقيقتين
+task.delay(120, function()
+    showTeamCard()
 end)
 
 ----------------------------------------------------------------
@@ -867,17 +940,6 @@ local function setStatus(txt, persistent)
     end
 end
 
--- حماية ضد النسخ للقائمين (يُستخدم في أزرار الواجهة)
-local function checkBlockedPlayer(name)
-    local lower = (name or ""):lower()
-    for _, p in ipairs(PROTECTED_ACCOUNTS) do
-        if p.name:lower() == lower then
-            return true, p.msg
-        end
-    end
-    return false, nil
-end
-
 -- Build spam commands
 local function buildLogsCmd(name, prefix)
     prefix = prefix or ";"
@@ -1028,8 +1090,6 @@ end
 copySpamBtn.MouseButton1Click:Connect(function()
     if spamARunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local blocked, bMsg = checkBlockedPlayer(selectedName)
-    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildSpamA(selectedName, prefix))
     spamARunning = true; setStartOn(copySpamBtn)
@@ -1042,8 +1102,6 @@ end)
 copyLogsBtn.MouseButton1Click:Connect(function()
     if logsSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local blocked, bMsg = checkBlockedPlayer(selectedName)
-    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildLogsCmd(selectedName, prefix))
     logsSpamRunning = true; setStartOn(copyLogsBtn)
@@ -1056,8 +1114,6 @@ end)
 copyReBtn.MouseButton1Click:Connect(function()
     if reSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local blocked, bMsg = checkBlockedPlayer(selectedName)
-    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildReCmd(selectedName, prefix))
     reSpamRunning = true; setStartOn(copyReBtn)
@@ -1070,8 +1126,6 @@ end)
 copyPowerBtn.MouseButton1Click:Connect(function()
     if powerSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local blocked, bMsg = checkBlockedPlayer(selectedName)
-    if blocked then showProtectNotif(bMsg); setStatus(bMsg) return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildPowerSpam(selectedName, prefix))
     powerSpamRunning = true; setStartOn(copyPowerBtn)
