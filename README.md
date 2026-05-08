@@ -156,20 +156,8 @@ local function showTeamCard()
             roleLbl.TextXAlignment = Enum.TextXAlignment.Right
         end
 
-        -- المصممه
+        -- المصممه فقط
         makePersonCard("shhode320", "👑 المصممه", 3)
-
-        -- فاصل خفيف
-        local div2 = Instance.new("Frame", card)
-        div2.Size = UDim2.new(0.85, 0, 0, 1)
-        div2.BackgroundColor3 = Color3.fromRGB(100, 120, 150)
-        div2.BackgroundTransparency = 0.6
-        div2.BorderSizePixel = 0
-        div2.LayoutOrder = 4
-
-        -- نائبا المصممه
-        makePersonCard("love1c_omar",         "🌙 نائب المصممه", 5)
-        makePersonCard("naeenalnatour332016",  "🌙 نائب المصممه", 6)
 
         -- زر إغلاق
         local closeBtn = Instance.new("TextButton", card)
@@ -182,7 +170,7 @@ local function showTeamCard()
         closeBtn.Text = "حسناً 👍"
         closeBtn.TextSize = 14
         closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        closeBtn.LayoutOrder = 7
+        closeBtn.LayoutOrder = 4
         Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 10)
         closeBtn.MouseEnter:Connect(function()
             TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 180, 255)}):Play()
