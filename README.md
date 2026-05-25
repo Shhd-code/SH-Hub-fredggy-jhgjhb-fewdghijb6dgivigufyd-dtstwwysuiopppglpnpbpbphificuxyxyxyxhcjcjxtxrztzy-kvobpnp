@@ -271,13 +271,13 @@ local function showWhatsNew()
 
     -- النص الرئيسي
     local bodyLines = {
-        "تمت اضافه نسخه من سكربت بلو",
-        "لتسهيل النسخ عليكم",
-        "موجود في خانة التحكم",
+        "تم تعديل سكربت الرقصات وتبديل القديم",
+        "وإصلاح بعض الاخطاء",
+        "واذا حابين تتعلمون تصميم السكربتات فتحت قناة باليوت تعلمكم كيف",
         "",
         "......",
         "",
-        "القادم أفضل أن شاء الله 😌🤞",
+        "تابعوني ms_iem@",
         "",
         "shhode320~",
     }
@@ -1224,7 +1224,7 @@ dancesBtn.MouseButton1Click:Connect(function()
     ctrlStatus.Text = "جاري تشغيل الرقصات..."
     task.spawn(function()
         local ok, err = pcall(function()
-            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-ARES-EMOTE-HUB-148804"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
         end)
         if ok then dancesLoaded = true; ctrlStatus.Text = "تم تشغيل الرقصات"
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
