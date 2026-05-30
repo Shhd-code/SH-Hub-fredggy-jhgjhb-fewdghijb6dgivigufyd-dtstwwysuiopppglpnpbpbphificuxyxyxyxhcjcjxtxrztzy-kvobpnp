@@ -271,14 +271,11 @@ local function showWhatsNew()
 
     -- النص الرئيسي
     local bodyLines = {
-        "تم تعديل سكربت الرقصات وتبديل القديم",
-        "وإصلاح بعض الاخطاء",
-        "واذا حابين تتعلمون تصميم السكربتات فتحت قناة باليوت تعلمكم كيف",
+        "تم تحديث السكربت وضفت شي جديد اكتشفوه + ترا ماتعرفو تستخدمون السكربت إلى الآن لان في ثغره قوية بالراديو موجوده بالسكربت بس ماتعرفو تستخدموها",
+        "ولو حابين تتعلمو تطوير السكربتات تابعوني باليوتيوب",
+        "@ms_iem",
         "",
-        "......",
-        "",
-        "تابعوني ms_iem@",
-        "",
+        "حسابي روب",
         "shhode320~",
     }
 
@@ -504,7 +501,7 @@ end)
 local title = Instance.new("TextLabel", main)
 title.BackgroundTransparency = 1
 title.Size = UDim2.new(1, -90, 0, 44); title.Position = UDim2.new(0, 16, 0, 0)
-title.Font = Enum.Font.GothamBlack; title.Text = "⬛ SH ⬛"
+title.Font = Enum.Font.GothamBlack; title.Text = "sh + K4 + IFQ"
 title.TextSize = 22; title.TextColor3 = Color3.fromRGB(0, 255, 130)
 title.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1167,6 +1164,8 @@ local allBtn       = makeBigBtn(ctrlScroll, "نسخ all", 490,
     Color3.fromRGB(30, 180, 255), Color3.fromRGB(10, 100, 180))
 local blueBtn      = makeBigBtn(ctrlScroll, "نسخه معدلة من سكربت بلو", 544,
     Color3.fromRGB(0, 120, 255), Color3.fromRGB(0, 60, 160))
+local afkBtn       = makeBigBtn(ctrlScroll, "تحكم في شات ال afk أو أحد مايعرف يسولف", 598,
+    Color3.fromRGB(255, 160, 0), Color3.fromRGB(180, 90, 0))
 
 local ctrlStatus = Instance.new("TextLabel", controlPage)
 ctrlStatus.BackgroundTransparency = 1
@@ -1577,7 +1576,7 @@ local function makeSlot(index, defaultText)
 end
 
 makeSlot(1, "SH ON TOP")
-makeSlot(2, "HAHAHAHA")
+makeSlot(2, "NA WAS HERE")
 makeSlot(3, "SHAHAD WAS HERE")
 
 ----------------------------------------------------------------
@@ -1715,6 +1714,19 @@ blueBtn.MouseButton1Click:Connect(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Blsh/refs/heads/main/README.md"))()
         end)
         if ok then blueLoaded = true; ctrlStatus.Text = "تم تشغيل نسخه معدلة من سكربت بلو"
+        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
+    end)
+end)
+
+local afkLoaded = false
+afkBtn.MouseButton1Click:Connect(function()
+    if afkLoaded then ctrlStatus.Text = "AFK مفعل بالفعل" return end
+    ctrlStatus.Text = "جاري تشغيل AFK..."
+    task.spawn(function()
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Afk/refs/heads/main/README.md"))()
+        end)
+        if ok then afkLoaded = true; ctrlStatus.Text = "تم تشغيل AFK ✅"
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
