@@ -271,10 +271,15 @@ local function showWhatsNew()
 
     -- النص الرئيسي
     local bodyLines = {
-        "تم تحديث السكربت وضفت شي جديد اكتشفوه + ترا ماتعرفو تستخدمون السكربت إلى الآن لان في ثغره قوية بالراديو موجوده بالسكربت بس ماتعرفو تستخدموها",
+        "✦ التحديثات الجديدة ✦",
         "",
-        "حسابي روب",
-        "shhode320~",
+        "🔹 تم تغيير الإنترو إلى إنترو جديد",
+        "🔹 تم تغيير ريموت الشات في خانة النسخ",
+        "🔹 تم إضافة زرين في خانة النسخ:",
+        "   • اسم كامل — يرسل الأوامر بالاسم الكامل",
+        "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
+        "",
+        "حسابي روب: shhode320~",
     }
 
     local bodyLbl = Instance.new("TextLabel", card)
@@ -329,128 +334,11 @@ end
 
 -- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
-    local core    = game:GetService("CoreGui")
-    local UIS     = game:GetService("UserInputService")
-
-    if core:FindFirstChild("SH_ZeroProtocol") then core.SH_ZeroProtocol:Destroy() end
-
-    local sg = Instance.new("ScreenGui")
-    sg.Name = "SH_ZeroProtocol"
-    sg.DisplayOrder = 9999999
-    sg.IgnoreGuiInset = true
-    sg.Parent = core
-
-    local bg = Instance.new("Frame", sg)
-    bg.Size = UDim2.new(1, 0, 1, 0)
-    bg.BackgroundColor3 = Color3.new(0, 0, 0)
-    bg.BorderSizePixel = 0
-
-    -- نص تلميح التخطي
-    local skipHint = Instance.new("TextLabel", sg)
-    skipHint.Size = UDim2.new(1, 0, 0, 28)
-    skipHint.Position = UDim2.new(0, 0, 1, -36)
-    skipHint.BackgroundTransparency = 1
-    skipHint.Font = Enum.Font.GothamSemibold
-    skipHint.Text = "اضغط مرتين لتخطي الإنترو"
-    skipHint.TextSize = 13
-    skipHint.TextColor3 = Color3.fromRGB(120, 120, 120)
-    skipHint.TextXAlignment = Enum.TextXAlignment.Center
-
-    -- منطق كشف الضغطة المزدوجة عبر UserInputService
-    local skipped = false
-    local lastClick = 0
-    local function doSkip()
-        if skipped then return end
-        skipped = true
-        TweenService:Create(bg, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
-        task.delay(0.32, function()
-            pcall(function() sg:Destroy() end)
-            showWhatsNew()
-        end)
-    end
-
-    local uisConn
-    uisConn = UIS.InputBegan:Connect(function(inp, processed)
-        if inp.UserInputType == Enum.UserInputType.MouseButton1
-           or inp.UserInputType == Enum.UserInputType.Touch then
-            local now = tick()
-            if (now - lastClick) < 0.4 then
-                uisConn:Disconnect()
-                doSkip()
-            end
-            lastClick = now
-        end
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
     end)
-
-    task.spawn(function()
-        -- المرحلة 1: تشويه النظام
-        for i = 1, 30 do
-            if skipped then return end
-            local line = Instance.new("Frame", sg)
-            line.Size = UDim2.new(1, 0, 0, 1)
-            line.Position = UDim2.new(0, 0, math.random(0, 100)/100, 0)
-            line.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
-            line.BackgroundTransparency = 0.5
-            line.BorderSizePixel = 0
-            task.delay(0.2, function() pcall(function() line:Destroy() end) end)
-            if i % 5 == 0 then
-                local warn = Instance.new("TextLabel", sg)
-                warn.Text = "DECRYPTING_SH_FILES..."
-                warn.TextColor3 = Color3.new(0, 1, 0)
-                warn.Font = Enum.Font.Code
-                warn.TextSize = 20
-                warn.BackgroundTransparency = 1
-                warn.Position = UDim2.new(math.random(1, 7)/10, 0, math.random(1, 7)/10, 0)
-                task.delay(0.5, function() pcall(function() warn:Destroy() end) end)
-            end
-            task.wait(0.1)
-        end
-
-        -- المرحلة 2: هوية رقمية
-        if skipped then return end
-        local sh_id = Instance.new("TextLabel", sg)
-        sh_id.Text = "ID: SH_REDACTED"
-        sh_id.TextColor3 = Color3.new(1, 1, 1)
-        sh_id.Font = Enum.Font.SpecialElite
-        sh_id.TextSize = 80
-        sh_id.BackgroundTransparency = 1
-        sh_id.Size = UDim2.new(1, 0, 0, 100)
-        sh_id.Position = UDim2.new(0, 0, 0.45, 0)
-        for i = 1, 40 do
-            if skipped then return end
-            sh_id.Position = UDim2.new(0, math.random(-5, 5), 0.45, math.random(-5, 5))
-            sh_id.Rotation = math.random(-2, 2)
-            task.wait(0.05)
-        end
-        if skipped then return end
-        sh_id.Rotation = 0
-        sh_id.Text = "S H"
-        sh_id.TextSize = 150
-        sh_id.TextColor3 = Color3.fromRGB(0, 255, 150)
-
-        -- المرحلة 3: الإنهاء
-        if skipped then return end
-        local status = Instance.new("TextLabel", sg)
-        status.Text = "ROOT_ACCESS_GRANTED"
-        status.TextColor3 = Color3.new(1, 1, 1)
-        status.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        status.Font = Enum.Font.Code
-        status.TextSize = 25
-        status.Size = UDim2.new(0, 300, 0, 40)
-        status.Position = UDim2.new(0.5, -150, 0.8, 0)
-        for i = 1, 50 do
-            if skipped then return end
-            task.wait(0.1)
-        end
-
-        -- إغلاق طبيعي
-        if not skipped then
-            skipped = true
-            TweenService:Create(bg, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
-            task.wait(0.42)
-            pcall(function() sg:Destroy() end)
-            showWhatsNew()
-        end
+    task.delay(0.5, function()
+        showWhatsNew()
     end)
 end
 pcall(runSplash)
@@ -671,6 +559,15 @@ local controlPage = makeTab("تحكم")
 -- Page: نسخ
 ----------------------------------------------------------------
 local selectedName = nil
+local nameMode = "full"  -- "full" = اسم كامل ، "three" = ثلاث حروف
+
+local function getEffectiveName()
+    if not selectedName then return nil end
+    if nameMode == "three" then
+        return selectedName:sub(1, 3)
+    end
+    return selectedName
+end
 
 local playersBar = Instance.new("ScrollingFrame", copyPage)
 playersBar.Position = UDim2.new(0, 10, 0, 10); playersBar.Size = UDim2.new(1, -20, 0, 46)
@@ -785,11 +682,72 @@ prefixLabel.TextXAlignment = Enum.TextXAlignment.Left
 prefixLabel.Text = "اكتب علامة الادمن الخاصة بك"
 
 -- ┌─────────────────────────────────────────────────────────┐
+-- │  زرا وضع الاسم: اسم كامل / ثلاث حروف                   │
+-- └─────────────────────────────────────────────────────────┘
+local nameModeRow = Instance.new("Frame", copyPage)
+nameModeRow.BackgroundTransparency = 1
+nameModeRow.Position = UDim2.new(0, 10, 0, 124)
+nameModeRow.Size = UDim2.new(1, -20, 0, 34)
+
+local fullNameBtn = Instance.new("TextButton", nameModeRow)
+fullNameBtn.Size = UDim2.new(0.5, -4, 1, 0)
+fullNameBtn.Position = UDim2.new(0, 0, 0, 0)
+fullNameBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 80)
+fullNameBtn.BackgroundTransparency = 0.1
+fullNameBtn.BorderSizePixel = 0
+fullNameBtn.AutoButtonColor = false
+fullNameBtn.Font = Enum.Font.GothamBold
+fullNameBtn.Text = "اسم كامل"
+fullNameBtn.TextSize = 14
+fullNameBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", fullNameBtn).CornerRadius = UDim.new(0, 9)
+local fnStroke = Instance.new("UIStroke", fullNameBtn)
+fnStroke.Color = Color3.fromRGB(0, 255, 130); fnStroke.Thickness = 2; fnStroke.Transparency = 0.1
+
+local threeLettersBtn = Instance.new("TextButton", nameModeRow)
+threeLettersBtn.Size = UDim2.new(0.5, -4, 1, 0)
+threeLettersBtn.Position = UDim2.new(0.5, 4, 0, 0)
+threeLettersBtn.BackgroundColor3 = Color3.fromRGB(30, 50, 30)
+threeLettersBtn.BackgroundTransparency = 0.15
+threeLettersBtn.BorderSizePixel = 0
+threeLettersBtn.AutoButtonColor = false
+threeLettersBtn.Font = Enum.Font.GothamBold
+threeLettersBtn.Text = "ثلاث حروف"
+threeLettersBtn.TextSize = 14
+threeLettersBtn.TextColor3 = Color3.fromRGB(200, 255, 215)
+Instance.new("UICorner", threeLettersBtn).CornerRadius = UDim.new(0, 9)
+local tlStroke = Instance.new("UIStroke", threeLettersBtn)
+tlStroke.Color = Color3.fromRGB(0, 200, 100); tlStroke.Thickness = 1.5; tlStroke.Transparency = 0.4
+
+local function updateNameModeUI()
+    if nameMode == "full" then
+        TweenService:Create(fullNameBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 160, 80), BackgroundTransparency = 0.05}):Play()
+        fnStroke.Transparency = 0.05
+        TweenService:Create(threeLettersBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(30, 50, 30), BackgroundTransparency = 0.2}):Play()
+        tlStroke.Transparency = 0.5
+    else
+        TweenService:Create(fullNameBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(30, 50, 30), BackgroundTransparency = 0.2}):Play()
+        fnStroke.Transparency = 0.5
+        TweenService:Create(threeLettersBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 160, 80), BackgroundTransparency = 0.05}):Play()
+        tlStroke.Transparency = 0.05
+    end
+end
+
+fullNameBtn.MouseButton1Click:Connect(function()
+    nameMode = "full"
+    updateNameModeUI()
+end)
+threeLettersBtn.MouseButton1Click:Connect(function()
+    nameMode = "three"
+    updateNameModeUI()
+end)
+
+-- ┌─────────────────────────────────────────────────────────┐
 -- │  ScrollingFrame لخانة النسخ - يمنع خروج الأزرار        │
 -- └─────────────────────────────────────────────────────────┘
 local spamScroll = Instance.new("ScrollingFrame", copyPage)
-spamScroll.Position = UDim2.new(0, 0, 0, 124)
-spamScroll.Size = UDim2.new(1, 0, 1, -152)
+spamScroll.Position = UDim2.new(0, 0, 0, 162)
+spamScroll.Size = UDim2.new(1, 0, 1, -190)
 spamScroll.BackgroundTransparency = 1
 spamScroll.BorderSizePixel = 0
 spamScroll.ScrollBarThickness = 4
@@ -1021,7 +979,12 @@ prefixBox.FocusLost:Connect(function()
 end)
 
 local function sendOnce(message)
-    if chatRemote then pcall(function() chatRemote:FireServer(message) end) end
+    pcall(function()
+        local args = {
+            [1] = "\216\180\216\167\216\170"
+        }
+        game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(unpack(args))
+    end)
     if hdRemote then pcall(function() hdRemote:InvokeServer(message) end) end
 end
 
@@ -1074,7 +1037,7 @@ copySpamBtn.MouseButton1Click:Connect(function()
     if spamARunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildSpamA(selectedName, prefix))
+    startSpam(buildSpamA(getEffectiveName(), prefix))
     spamARunning = true; setStartOn(copySpamBtn)
 end)
 stopBtnA.MouseButton1Click:Connect(function()
@@ -1086,7 +1049,7 @@ copyLogsBtn.MouseButton1Click:Connect(function()
     if logsSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildLogsCmd(selectedName, prefix))
+    startSpam(buildLogsCmd(getEffectiveName(), prefix))
     logsSpamRunning = true; setStartOn(copyLogsBtn)
 end)
 stopBtnB.MouseButton1Click:Connect(function()
@@ -1098,7 +1061,7 @@ copyReBtn.MouseButton1Click:Connect(function()
     if reSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildReCmd(selectedName, prefix))
+    startSpam(buildReCmd(getEffectiveName(), prefix))
     reSpamRunning = true; setStartOn(copyReBtn)
 end)
 stopBtnC.MouseButton1Click:Connect(function()
@@ -1110,7 +1073,7 @@ copyPowerBtn.MouseButton1Click:Connect(function()
     if powerSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildPowerSpam(selectedName, prefix))
+    startSpam(buildPowerSpam(getEffectiveName(), prefix))
     powerSpamRunning = true; setStartOn(copyPowerBtn)
 end)
 stopBtnD.MouseButton1Click:Connect(function()
