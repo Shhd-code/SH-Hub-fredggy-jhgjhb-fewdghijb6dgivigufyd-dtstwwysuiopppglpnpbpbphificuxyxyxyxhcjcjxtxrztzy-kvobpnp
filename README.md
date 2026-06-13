@@ -981,7 +981,7 @@ end)
 local function sendOnce(message)
     pcall(function()
         local args = {
-            [1] = "\216\180\216\167\216\170"
+            [1] = message
         }
         game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(unpack(args))
     end)
