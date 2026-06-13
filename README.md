@@ -980,10 +980,7 @@ end)
 
 local function sendOnce(message)
     pcall(function()
-        local args = {
-            [1] = message
-        }
-        game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(unpack(args))
+        game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
     end)
     if hdRemote then pcall(function() hdRemote:InvokeServer(message) end) end
 end
