@@ -278,6 +278,10 @@ local function showWhatsNew()
         "🔹 تم إضافة زرين في خانة النسخ:",
         "   • اسم كامل — يرسل الأوامر بالاسم الكامل",
         "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
+        "🔹 تم حذف التايتال لان انتهت الثغرة",
+        "🔹 تم إضافة مراقبة الشات / تقليد الشات",
+        "🔹 تم حذف التايتال لان انتهت الثغرة",
+        "🔹 تم إضافة مراقبة الشات / تقليد الشات",
         "",
         "حسابي روب: shhode320~",
     }
@@ -1619,14 +1623,13 @@ print("[SH RGB] Loaded")
 ]==]
 
 titleBtn.MouseButton1Click:Connect(function()
-    if titleLoaded then ctrlStatus.Text = "تحكم اللقب مفعل بالفعل" return end
-    ctrlStatus.Text = "جاري تشغيل تحكم اللقب..."
+    ctrlStatus.Text = "جاري تشغيل مراقبة الشات..."
     task.spawn(function()
-        local fn, err = loadstring(SH_RGB_SOURCE)
-        if not fn then ctrlStatus.Text = "فشل: " .. tostring(err):sub(1,60); return end
-        local ok, runErr = pcall(fn)
-        if ok then titleLoaded = true; ctrlStatus.Text = "تم تشغيل تحكم اللقب"
-        else ctrlStatus.Text = "خطأ: " .. tostring(runErr):sub(1,60) end
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/NAH/refs/heads/main/README.md"))()
+        end)
+        if ok then ctrlStatus.Text = "تم تشغيل مراقبة الشات"
+        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
 
