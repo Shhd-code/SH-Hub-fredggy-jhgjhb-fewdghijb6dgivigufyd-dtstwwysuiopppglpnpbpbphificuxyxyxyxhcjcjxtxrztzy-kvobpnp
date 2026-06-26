@@ -280,8 +280,8 @@ local function showWhatsNew()
         "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
         "🔹 تم حذف التايتال لان انتهت الثغرة",
         "🔹 تم إضافة مراقبة الشات / تقليد الشات",
-        "🔹 تم حذف التايتال لان انتهت الثغرة",
-        "🔹 تم إضافة مراقبة الشات / تقليد الشات",
+        "",
+        "",
         "",
         "حسابي روب: shhode320~",
     }
@@ -1120,7 +1120,7 @@ local spinStopBtn  = makeBigBtn(ctrlScroll, "إيقاف الدوران", 328,
     Color3.fromRGB(170, 30, 30), Color3.fromRGB(110, 15, 15))
 local logsBtn      = makeBigBtn(ctrlScroll, "حماية من logs / clogs", 382,
     Color3.fromRGB(0, 130, 220), Color3.fromRGB(0, 70, 140))
-local titleBtn     = makeBigBtn(ctrlScroll, "تحكم في اللقب", 436,
+local titleBtn     = makeBigBtn(ctrlScroll, "تقليد الشات", 436,
     Color3.fromRGB(170, 70, 220), Color3.fromRGB(100, 30, 150))
 local allBtn       = makeBigBtn(ctrlScroll, "نسخ all", 490,
     Color3.fromRGB(30, 180, 255), Color3.fromRGB(10, 100, 180))
