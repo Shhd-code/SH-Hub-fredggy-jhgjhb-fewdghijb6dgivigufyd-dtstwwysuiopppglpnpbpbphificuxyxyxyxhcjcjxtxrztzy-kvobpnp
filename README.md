@@ -439,18 +439,23 @@ if not miniGui.Parent then miniGui.Parent = PlayerGui end
 local miniBubble = Instance.new("TextButton", miniGui)
 miniBubble.AnchorPoint = Vector2.new(0, 0.5)
 miniBubble.Position = UDim2.new(0, 16, 0.5, 0)
-miniBubble.Size = UDim2.new(0, 44, 0, 44)
-miniBubble.BackgroundColor3 = Color3.fromRGB(0, 110, 55)
-miniBubble.BackgroundTransparency = 0.15; miniBubble.BorderSizePixel = 0
+miniBubble.Size = UDim2.new(0, 54, 0, 54)
+miniBubble.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+miniBubble.BackgroundTransparency = 1; miniBubble.BorderSizePixel = 0
 miniBubble.AutoButtonColor = false
-miniBubble.Text = "SH"
-miniBubble.Font = Enum.Font.GothamBlack
-miniBubble.TextSize = 14
-miniBubble.TextColor3 = Color3.fromRGB(230, 255, 240)
+miniBubble.Text = ""
 miniBubble.Visible = false
 Instance.new("UICorner", miniBubble).CornerRadius = UDim.new(1, 0)
+-- صورة السكن بشكل دائري
+local miniImg = Instance.new("ImageLabel", miniBubble)
+miniImg.Size = UDim2.new(1, 0, 1, 0)
+miniImg.Position = UDim2.new(0, 0, 0, 0)
+miniImg.BackgroundTransparency = 1
+miniImg.Image = "rbxassetid://106293502912943"
+miniImg.ScaleType = Enum.ScaleType.Crop
+Instance.new("UICorner", miniImg).CornerRadius = UDim.new(1, 0)
 local miniStroke = Instance.new("UIStroke", miniBubble)
-miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 1.6; miniStroke.Transparency = 0.2
+miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 2; miniStroke.Transparency = 0.2
 
 -- pulse
 task.spawn(function()
@@ -849,20 +854,26 @@ makeRowLabel(rowA, "سبام")
 local copySpamBtn = makeStartBtn(rowA)
 local stopBtnA    = makeStopBtn(rowA)
 
--- الصف الثاني: Logs
-local rowB = makeSpamRow(2)
+-- الصف الثاني: نسخ غامض
+local rowGhost = makeSpamRow(2)
+makeRowLabel(rowGhost, "نسخ غامض")
+local copyGhostBtn = makeStartBtn(rowGhost)
+local stopBtnGhost = makeStopBtn(rowGhost)
+
+-- الصف الثالث: Logs
+local rowB = makeSpamRow(3)
 makeRowLabel(rowB, "Logs")
 local copyLogsBtn = makeStartBtn(rowB)
 local stopBtnB    = makeStopBtn(rowB)
 
 -- الصف الثالث: Re
-local rowC = makeSpamRow(3)
+local rowC = makeSpamRow(4)
 makeRowLabel(rowC, "Re")
 local copyReBtn = makeStartBtn(rowC)
 local stopBtnC  = makeStopBtn(rowC)
 
 -- الصف الرابع: ⚡ سبام قوي
-local rowD = makeSpamRow(4)
+local rowD = makeSpamRow(5)
 makeRowLabel(rowD, "⚡ سبام قوي")
 local copyPowerBtn = makeStartBtn(rowD)
 local stopBtnD     = makeStopBtn(rowD)
@@ -902,10 +913,17 @@ end
 
 local function buildSpamA(name, prefix)
     prefix = prefix or ";"
+    local block = prefix.."re "..name.." "..prefix.."res "..name.." "..prefix.."logs "..name.." "..prefix.."clogs "..name.." "..prefix.."nv "..name.." "..prefix.."cmdbar "..name.." "..prefix.."jc "..name.." "..prefix.."ice "..name
     local parts = {}
-    for i = 1, 10 do
-        parts[i] = prefix.."logs "..name.." "..prefix.."nv "..name.." "..prefix.."re "..name
-    end
+    for i = 1, 8 do parts[i] = block end
+    return table.concat(parts, " ")
+end
+
+local function buildGhostSpam(name, prefix)
+    prefix = prefix or ";"
+    local block = prefix.."explode "..name.." "..prefix.."warp "..name.." "..prefix.."logs "..name.." "..prefix.."clogs "..name.." "..prefix.."res "..name.." "..prefix.."ice "..name.." "..prefix.."jc "..name.." "..prefix.."dog "..name.." "..prefix.."char "..name.." miri "..prefix.."fling "..name.." "..prefix.."nv "..name.." "..prefix.."re "..name
+    local parts = {}
+    for i = 1, 5 do parts[i] = block end
     return table.concat(parts, " ")
 end
 
@@ -1023,6 +1041,7 @@ end
 
 -- ── helpers لتوحيد منطق التشغيل والإيقاف ─────────────────────
 local spamARunning     = false
+local ghostSpamRunning = false
 local logsSpamRunning  = false
 local reSpamRunning    = false
 local powerSpamRunning = false
@@ -1043,6 +1062,18 @@ copySpamBtn.MouseButton1Click:Connect(function()
 end)
 stopBtnA.MouseButton1Click:Connect(function()
     if spamARunning then spamARunning = doStop(spamARunning, copySpamBtn) end
+end)
+
+-- ── نسخ غامض ─────────────────────────────────────────────────
+copyGhostBtn.MouseButton1Click:Connect(function()
+    if ghostSpamRunning then return end
+    if not selectedName then setStatus("اختر لاعب اولا") return end
+    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
+    startSpam(buildGhostSpam(getEffectiveName(), prefix))
+    ghostSpamRunning = true; setStartOn(copyGhostBtn)
+end)
+stopBtnGhost.MouseButton1Click:Connect(function()
+    if ghostSpamRunning then ghostSpamRunning = doStop(ghostSpamRunning, copyGhostBtn) end
 end)
 
 -- ── Logs ─────────────────────────────────────────────────────
