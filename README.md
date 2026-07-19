@@ -1693,3 +1693,4 @@ afkBtn.MouseButton1Click:Connect(function()
 end)
 
 print("[SH] Loaded")
+
