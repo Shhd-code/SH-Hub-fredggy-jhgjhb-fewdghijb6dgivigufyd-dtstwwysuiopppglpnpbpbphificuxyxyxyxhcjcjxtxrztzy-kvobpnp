@@ -563,6 +563,7 @@ end
 
 local copyPage    = makeTab("نسخ")
 local controlPage = makeTab("تحكم")
+local extraPage   = makeTab("سبام اكسترا")
 
 ----------------------------------------------------------------
 -- Page: نسخ
@@ -1722,6 +1723,332 @@ afkBtn.MouseButton1Click:Connect(function()
         else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
 end)
+
+----------------------------------------------------------------
+-- Page: سبام اكسترا
+----------------------------------------------------------------
+do
+    local ex_GREEN_A = Color3.fromRGB(0, 255, 120)
+    local ex_DARK2   = Color3.fromRGB(10, 32, 16)
+    local ex_WHITE   = Color3.fromRGB(255, 255, 255)
+    local ex_YELLOW  = Color3.fromRGB(255, 230, 60)
+    local ex_LBLUE   = Color3.fromRGB(120, 210, 255)
+
+    -- قائمة اللاعبين
+    local ex_playersBar = Instance.new("ScrollingFrame", extraPage)
+    ex_playersBar.Position = UDim2.new(0, 0, 0, 0)
+    ex_playersBar.Size     = UDim2.new(1, 0, 0, 42)
+    ex_playersBar.BackgroundColor3 = ex_DARK2; ex_playersBar.BackgroundTransparency = 0.4
+    ex_playersBar.BorderSizePixel = 0; ex_playersBar.ScrollBarThickness = 3
+    ex_playersBar.ScrollingDirection = Enum.ScrollingDirection.X
+    ex_playersBar.AutomaticCanvasSize = Enum.AutomaticSize.X
+    ex_playersBar.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ex_playersBar.ScrollBarImageColor3 = ex_GREEN_A
+    Instance.new("UICorner", ex_playersBar).CornerRadius = UDim.new(0, 8)
+    local ex_pbLayout = Instance.new("UIListLayout", ex_playersBar)
+    ex_pbLayout.FillDirection = Enum.FillDirection.Horizontal
+    ex_pbLayout.Padding = UDim.new(0, 6)
+    ex_pbLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ex_pbLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    local ex_pbPad = Instance.new("UIPadding", ex_playersBar)
+    ex_pbPad.PaddingLeft = UDim.new(0, 8); ex_pbPad.PaddingRight = UDim.new(0, 8)
+
+    local ex_selectedLabel = Instance.new("TextLabel", extraPage)
+    ex_selectedLabel.BackgroundTransparency = 1
+    ex_selectedLabel.Position = UDim2.new(0, 4, 0, 46); ex_selectedLabel.Size = UDim2.new(1, -8, 0, 18)
+    ex_selectedLabel.Font = Enum.Font.GothamSemibold; ex_selectedLabel.TextSize = 13
+    ex_selectedLabel.TextColor3 = ex_YELLOW; ex_selectedLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ex_selectedLabel.Text = "⬆ اختر لاعب من القائمة"
+
+    -- صف الإعدادات: علامة + وضع الاسم
+    local ex_settingsRow = Instance.new("Frame", extraPage)
+    ex_settingsRow.Position = UDim2.new(0, 0, 0, 68)
+    ex_settingsRow.Size     = UDim2.new(1, 0, 0, 30)
+    ex_settingsRow.BackgroundTransparency = 1; ex_settingsRow.BorderSizePixel = 0
+
+    local ex_prefixLbl = Instance.new("TextLabel", ex_settingsRow)
+    ex_prefixLbl.Position = UDim2.new(0, 0, 0, 0); ex_prefixLbl.Size = UDim2.new(0, 70, 1, 0)
+    ex_prefixLbl.BackgroundTransparency = 1; ex_prefixLbl.Font = Enum.Font.GothamBold; ex_prefixLbl.TextSize = 14
+    ex_prefixLbl.TextColor3 = ex_WHITE; ex_prefixLbl.Text = "علامة:"; ex_prefixLbl.TextXAlignment = Enum.TextXAlignment.Left
+
+    local ex_prefixBox = Instance.new("TextBox", ex_settingsRow)
+    ex_prefixBox.Position = UDim2.new(0, 68, 0, 0); ex_prefixBox.Size = UDim2.new(0, 44, 1, 0)
+    ex_prefixBox.BackgroundColor3 = ex_DARK2; ex_prefixBox.BackgroundTransparency = 0.1
+    ex_prefixBox.BorderSizePixel = 0; ex_prefixBox.Font = Enum.Font.GothamBold
+    ex_prefixBox.Text = ";"; ex_prefixBox.TextSize = 16
+    ex_prefixBox.TextColor3 = ex_YELLOW; ex_prefixBox.ClearTextOnFocus = false
+    Instance.new("UICorner", ex_prefixBox).CornerRadius = UDim.new(0, 8)
+    local ex_pfStroke = Instance.new("UIStroke", ex_prefixBox)
+    ex_pfStroke.Color = Color3.fromRGB(0,0,0); ex_pfStroke.Transparency = 0.0; ex_pfStroke.Thickness = 1.5
+
+    local function ex_makeToggle(parent, text, xOffset)
+        local b = Instance.new("TextButton", parent)
+        b.Position = UDim2.new(0, xOffset, 0, 0); b.Size = UDim2.new(0, 100, 1, 0)
+        b.BackgroundColor3 = Color3.fromRGB(25, 55, 30); b.BackgroundTransparency = 0.1
+        b.BorderSizePixel = 0; b.AutoButtonColor = false
+        b.Font = Enum.Font.GothamBold; b.Text = text; b.TextSize = 14
+        b.TextColor3 = ex_WHITE
+        Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+        local s = Instance.new("UIStroke", b)
+        s.Color = Color3.fromRGB(0,0,0); s.Transparency = 0.0; s.Thickness = 1.5
+        return b, s
+    end
+
+    local ex_fullNameBtn, ex_fnStroke = ex_makeToggle(ex_settingsRow, "اسم كامل", 122)
+    local ex_threeBtn,   ex_tlStroke  = ex_makeToggle(ex_settingsRow, "٣ حروف",   226)
+
+    -- صندوق الأوامر المخصصة
+    local ex_cmdLbl = Instance.new("TextLabel", extraPage)
+    ex_cmdLbl.Position = UDim2.new(0, 4, 0, 104); ex_cmdLbl.Size = UDim2.new(1, -8, 0, 16)
+    ex_cmdLbl.BackgroundTransparency = 1; ex_cmdLbl.Font = Enum.Font.GothamBold; ex_cmdLbl.TextSize = 14
+    ex_cmdLbl.TextColor3 = ex_LBLUE; ex_cmdLbl.TextXAlignment = Enum.TextXAlignment.Left
+    ex_cmdLbl.Text = "✏ اكتب الأمر أو الكلام (يتكرر 35 مرة) — يتحدث وهو شغال:"
+
+    local ex_cmdBox = Instance.new("TextBox", extraPage)
+    ex_cmdBox.Position = UDim2.new(0, 0, 0, 122); ex_cmdBox.Size = UDim2.new(1, 0, 0, 56)
+    ex_cmdBox.BackgroundColor3 = Color3.fromRGB(12, 38, 20); ex_cmdBox.BackgroundTransparency = 0.05
+    ex_cmdBox.BorderSizePixel = 0; ex_cmdBox.Font = Enum.Font.GothamBold
+    ex_cmdBox.Text = ""; ex_cmdBox.TextSize = 15
+    ex_cmdBox.TextColor3 = ex_WHITE
+    ex_cmdBox.TextStrokeColor3 = Color3.fromRGB(0,0,0); ex_cmdBox.TextStrokeTransparency = 0.5
+    ex_cmdBox.PlaceholderText = "مثال:  ;re   أو   ;re ;logs   أو  كلام عربي"
+    ex_cmdBox.PlaceholderColor3 = Color3.fromRGB(130, 190, 150)
+    ex_cmdBox.ClearTextOnFocus = false; ex_cmdBox.MultiLine = false
+    ex_cmdBox.TextXAlignment = Enum.TextXAlignment.Left
+    local ex_cmdPad = Instance.new("UIPadding", ex_cmdBox)
+    ex_cmdPad.PaddingLeft = UDim.new(0, 12); ex_cmdPad.PaddingRight = UDim.new(0, 12)
+    Instance.new("UICorner", ex_cmdBox).CornerRadius = UDim.new(0, 10)
+    local ex_cmdStroke = Instance.new("UIStroke", ex_cmdBox)
+    ex_cmdStroke.Color = Color3.fromRGB(0,0,0); ex_cmdStroke.Transparency = 0.0; ex_cmdStroke.Thickness = 2
+
+    -- أزرار التشغيل / الإيقاف
+    local ex_btnsRow = Instance.new("Frame", extraPage)
+    ex_btnsRow.Position = UDim2.new(0, 0, 0, 184); ex_btnsRow.Size = UDim2.new(1, 0, 0, 40)
+    ex_btnsRow.BackgroundTransparency = 1; ex_btnsRow.BorderSizePixel = 0
+
+    local ex_startBtn = Instance.new("TextButton", ex_btnsRow)
+    ex_startBtn.Position = UDim2.new(0, 0, 0, 0); ex_startBtn.Size = UDim2.new(0.62, -4, 1, 0)
+    ex_startBtn.BackgroundColor3 = Color3.fromRGB(0, 175, 80); ex_startBtn.BackgroundTransparency = 0.0
+    ex_startBtn.BorderSizePixel = 0; ex_startBtn.AutoButtonColor = false
+    ex_startBtn.Font = Enum.Font.GothamBold; ex_startBtn.Text = "▶  تشغيل السبام"; ex_startBtn.TextSize = 16
+    ex_startBtn.TextColor3 = ex_WHITE
+    ex_startBtn.TextStrokeColor3 = Color3.fromRGB(0,0,0); ex_startBtn.TextStrokeTransparency = 0.5
+    Instance.new("UICorner", ex_startBtn).CornerRadius = UDim.new(0, 10)
+    local ex_startStroke = Instance.new("UIStroke", ex_startBtn)
+    ex_startStroke.Color = Color3.fromRGB(0,0,0); ex_startStroke.Transparency = 0.0; ex_startStroke.Thickness = 2
+
+    local ex_stopBtn = Instance.new("TextButton", ex_btnsRow)
+    ex_stopBtn.Position = UDim2.new(0.62, 4, 0, 0); ex_stopBtn.Size = UDim2.new(0.38, -4, 1, 0)
+    ex_stopBtn.BackgroundColor3 = Color3.fromRGB(170, 30, 30); ex_stopBtn.BackgroundTransparency = 0.0
+    ex_stopBtn.BorderSizePixel = 0; ex_stopBtn.AutoButtonColor = false
+    ex_stopBtn.Font = Enum.Font.GothamBold; ex_stopBtn.Text = "⬛  إيقاف"; ex_stopBtn.TextSize = 16
+    ex_stopBtn.TextColor3 = ex_WHITE
+    ex_stopBtn.TextStrokeColor3 = Color3.fromRGB(0,0,0); ex_stopBtn.TextStrokeTransparency = 0.5
+    Instance.new("UICorner", ex_stopBtn).CornerRadius = UDim.new(0, 10)
+    local ex_stopStroke = Instance.new("UIStroke", ex_stopBtn)
+    ex_stopStroke.Color = Color3.fromRGB(0,0,0); ex_stopStroke.Transparency = 0.0; ex_stopStroke.Thickness = 2
+
+    -- hover
+    local ex_spamRunning = false
+    local ex_spamThread
+
+    ex_startBtn.MouseEnter:Connect(function()
+        if not ex_spamRunning then
+            TweenService:Create(ex_startBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 220, 100)}):Play()
+        end
+    end)
+    ex_startBtn.MouseLeave:Connect(function()
+        if not ex_spamRunning then
+            TweenService:Create(ex_startBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 175, 80)}):Play()
+        end
+    end)
+    ex_stopBtn.MouseEnter:Connect(function()
+        TweenService:Create(ex_stopBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(220, 50, 50)}):Play()
+    end)
+    ex_stopBtn.MouseLeave:Connect(function()
+        TweenService:Create(ex_stopBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(170, 30, 30)}):Play()
+    end)
+
+    -- سطر الحالة
+    local ex_statusLbl = Instance.new("TextLabel", extraPage)
+    ex_statusLbl.BackgroundTransparency = 1
+    ex_statusLbl.Position = UDim2.new(0, 0, 1, -24); ex_statusLbl.Size = UDim2.new(1, 0, 0, 22)
+    ex_statusLbl.Font = Enum.Font.GothamBold; ex_statusLbl.TextSize = 14
+    ex_statusLbl.TextColor3 = ex_YELLOW
+    ex_statusLbl.TextStrokeColor3 = Color3.fromRGB(0,0,0); ex_statusLbl.TextStrokeTransparency = 0.4
+    ex_statusLbl.TextTransparency = 1; ex_statusLbl.Text = ""
+
+    local function ex_setStatus(txt, persistent)
+        ex_statusLbl.Text = txt; ex_statusLbl.TextTransparency = 0
+        if not persistent then
+            task.delay(2.5, function()
+                if ex_statusLbl.Text == txt then
+                    TweenService:Create(ex_statusLbl, TweenInfo.new(0.6), {TextTransparency = 1}):Play()
+                end
+            end)
+        end
+    end
+
+    -- منطق اللاعبين
+    local ex_selectedName = nil
+    local ex_nameMode = "full"
+    local ex_playerChips = {}
+
+    local function ex_getEffectiveName()
+        if not ex_selectedName then return nil end
+        return ex_nameMode == "three" and ex_selectedName:sub(1, 3) or ex_selectedName
+    end
+
+    local function ex_refreshPlayers()
+        for _, c in ipairs(ex_playersBar:GetChildren()) do
+            if c:IsA("TextButton") then c:Destroy() end
+        end
+        ex_playerChips = {}
+        for _, p in ipairs(Players:GetPlayers()) do
+            if p ~= LocalPlayer then
+                local chip = Instance.new("TextButton", ex_playersBar)
+                chip.Size = UDim2.new(0, 0, 1, -8); chip.AutomaticSize = Enum.AutomaticSize.X
+                chip.BackgroundColor3 = ex_DARK2; chip.BackgroundTransparency = 0.2
+                chip.BorderSizePixel = 0; chip.AutoButtonColor = false
+                chip.Font = Enum.Font.GothamBold; chip.Text = "  " .. p.Name .. "  "
+                chip.TextSize = 14; chip.TextColor3 = ex_WHITE
+                Instance.new("UICorner", chip).CornerRadius = UDim.new(0, 8)
+                local cs = Instance.new("UIStroke", chip)
+                cs.Color = Color3.fromRGB(0,0,0); cs.Transparency = 0.0
+                chip.MouseButton1Click:Connect(function()
+                    ex_selectedName = p.Name
+                    ex_selectedLabel.Text = "✔  المستهدف: " .. p.Name
+                    for _, ch in pairs(ex_playerChips) do
+                        TweenService:Create(ch, TweenInfo.new(0.12), {BackgroundColor3 = ex_DARK2, TextColor3 = ex_WHITE}):Play()
+                    end
+                    TweenService:Create(chip, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 130, 60), TextColor3 = ex_YELLOW}):Play()
+                end)
+                chip.MouseEnter:Connect(function()
+                    if ex_selectedName ~= p.Name then
+                        TweenService:Create(chip, TweenInfo.new(0.1), {BackgroundTransparency = 0.05}):Play()
+                    end
+                end)
+                chip.MouseLeave:Connect(function()
+                    if ex_selectedName ~= p.Name then
+                        TweenService:Create(chip, TweenInfo.new(0.1), {BackgroundTransparency = 0.2}):Play()
+                    end
+                end)
+                ex_playerChips[p.Name] = chip
+            end
+        end
+    end
+
+    ex_refreshPlayers()
+    Players.PlayerAdded:Connect(ex_refreshPlayers)
+    Players.PlayerRemoving:Connect(ex_refreshPlayers)
+
+    -- وضع الاسم UI
+    local function ex_updateNameModeUI()
+        if ex_nameMode == "full" then
+            TweenService:Create(ex_fullNameBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 155, 70), BackgroundTransparency = 0.0, TextColor3 = ex_YELLOW}):Play()
+            ex_fnStroke.Transparency = 0.0; ex_fnStroke.Color = Color3.fromRGB(0,0,0)
+            TweenService:Create(ex_threeBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(25, 55, 30), BackgroundTransparency = 0.1, TextColor3 = ex_WHITE}):Play()
+            ex_tlStroke.Transparency = 0.0; ex_tlStroke.Color = Color3.fromRGB(0,0,0)
+        else
+            TweenService:Create(ex_fullNameBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(25, 55, 30), BackgroundTransparency = 0.1, TextColor3 = ex_WHITE}):Play()
+            ex_fnStroke.Transparency = 0.0; ex_fnStroke.Color = Color3.fromRGB(0,0,0)
+            TweenService:Create(ex_threeBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(0, 155, 70), BackgroundTransparency = 0.0, TextColor3 = ex_YELLOW}):Play()
+            ex_tlStroke.Transparency = 0.0; ex_tlStroke.Color = Color3.fromRGB(0,0,0)
+        end
+    end
+
+    ex_updateNameModeUI()
+    ex_fullNameBtn.MouseButton1Click:Connect(function() ex_nameMode = "full";  ex_updateNameModeUI() end)
+    ex_threeBtn.MouseButton1Click:Connect(function()    ex_nameMode = "three"; ex_updateNameModeUI() end)
+
+    ex_prefixBox.FocusLost:Connect(function()
+        local val = ex_prefixBox.Text
+        if val == "" then val = ";"; ex_prefixBox.Text = ";" end
+        pcall(function()
+            if changeSettingRemote then
+                changeSettingRemote:InvokeServer({[1] = "Prefix", [2] = val})
+            end
+        end)
+        ex_setStatus("✓ علامة الأدمن: " .. val)
+    end)
+
+    -- بناء رسالة السبام المخصصة
+    local function ex_buildCustomMsg(input, name, prefix)
+        prefix = prefix and prefix ~= "" and prefix or ";"
+        input  = input:match("^%s*(.-)%s*$")
+        if input == "" then return nil end
+        local tokens = {}
+        for tok in input:gmatch("%S+") do table.insert(tokens, tok) end
+        if #tokens == 0 then return nil end
+        local hasCmd = false
+        for _, t in ipairs(tokens) do
+            if t:sub(1, #prefix) == prefix then hasCmd = true; break end
+        end
+        local block
+        if hasCmd and name then
+            local parts = {}
+            for _, t in ipairs(tokens) do
+                if t:sub(1, #prefix) == prefix then
+                    table.insert(parts, t .. " " .. name)
+                else
+                    table.insert(parts, t)
+                end
+            end
+            block = table.concat(parts, " ")
+        else
+            block = input
+        end
+        local result = {}
+        for i = 1, 35 do result[i] = block end
+        return table.concat(result, " ")
+    end
+
+    -- حلقة السبام
+    local function ex_stopSpam()
+        ex_spamRunning = false; ex_spamThread = nil
+        TweenService:Create(ex_startBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 175, 80)}):Play()
+        ex_startStroke.Color = Color3.fromRGB(0,0,0)
+        ex_startBtn.Text = "▶  تشغيل السبام"
+        ex_setStatus("⏹ تم إيقاف السبام")
+    end
+
+    local function ex_startSpam()
+        if ex_spamRunning then ex_stopSpam(); task.wait(0.05) end
+        local prefix0 = (ex_prefixBox.Text ~= "" and ex_prefixBox.Text) or ";"
+        local input0  = ex_cmdBox.Text:match("^%s*(.-)%s*$")
+        if input0 == "" then ex_setStatus("⚠ اكتب أمر أو كلام في الصندوق أولاً"); return end
+        local hasCmd0 = false
+        for tok in input0:gmatch("%S+") do
+            if tok:sub(1, #prefix0) == prefix0 then hasCmd0 = true; break end
+        end
+        if hasCmd0 and not ex_getEffectiveName() then
+            ex_setStatus("⚠ اختر لاعب من القائمة أولاً"); return
+        end
+        ex_spamRunning = true
+        TweenService:Create(ex_startBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 210, 95)}):Play()
+        ex_startStroke.Color = Color3.fromRGB(0,0,0)
+        ex_startBtn.Text = "● شغال..."
+        ex_setStatus("✅ السبام شغال — غيّر الصندوق وهو يتحدث فوراً", true)
+        ex_spamThread = task.spawn(function()
+            while ex_spamRunning do
+                local prefix = (ex_prefixBox.Text ~= "" and ex_prefixBox.Text) or ";"
+                local input  = ex_cmdBox.Text
+                local name   = ex_getEffectiveName()
+                local msg    = ex_buildCustomMsg(input, name, prefix)
+                if msg then sendOnce(msg) end
+                task.wait(0.05)
+            end
+        end)
+    end
+
+    ex_startBtn.MouseButton1Click:Connect(function()
+        if ex_spamRunning then return end
+        ex_startSpam()
+    end)
+    ex_stopBtn.MouseButton1Click:Connect(function()
+        if ex_spamRunning then ex_stopSpam() end
+    end)
+end
 
 print("[SH] Loaded")
 
