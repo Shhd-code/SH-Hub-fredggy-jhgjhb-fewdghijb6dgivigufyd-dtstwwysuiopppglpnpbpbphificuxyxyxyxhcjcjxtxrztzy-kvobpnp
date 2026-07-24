@@ -439,23 +439,18 @@ if not miniGui.Parent then miniGui.Parent = PlayerGui end
 local miniBubble = Instance.new("TextButton", miniGui)
 miniBubble.AnchorPoint = Vector2.new(0, 0.5)
 miniBubble.Position = UDim2.new(0, 16, 0.5, 0)
-miniBubble.Size = UDim2.new(0, 54, 0, 54)
-miniBubble.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-miniBubble.BackgroundTransparency = 1; miniBubble.BorderSizePixel = 0
+miniBubble.Size = UDim2.new(0, 44, 0, 44)
+miniBubble.BackgroundColor3 = Color3.fromRGB(0, 110, 55)
+miniBubble.BackgroundTransparency = 0.15; miniBubble.BorderSizePixel = 0
 miniBubble.AutoButtonColor = false
-miniBubble.Text = ""
+miniBubble.Text = "SH"
+miniBubble.Font = Enum.Font.GothamBlack
+miniBubble.TextSize = 14
+miniBubble.TextColor3 = Color3.fromRGB(230, 255, 240)
 miniBubble.Visible = false
 Instance.new("UICorner", miniBubble).CornerRadius = UDim.new(1, 0)
--- صورة السكن بشكل دائري
-local miniImg = Instance.new("ImageLabel", miniBubble)
-miniImg.Size = UDim2.new(1, 0, 1, 0)
-miniImg.Position = UDim2.new(0, 0, 0, 0)
-miniImg.BackgroundTransparency = 1
-miniImg.Image = "rbxassetid://106293502912943"
-miniImg.ScaleType = Enum.ScaleType.Crop
-Instance.new("UICorner", miniImg).CornerRadius = UDim.new(1, 0)
 local miniStroke = Instance.new("UIStroke", miniBubble)
-miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 2; miniStroke.Transparency = 0.2
+miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 1.6; miniStroke.Transparency = 0.2
 
 -- pulse
 task.spawn(function()
