@@ -564,7 +564,8 @@ local extraPage   = makeTab("سبام اكسترا")
 -- Page: نسخ
 ----------------------------------------------------------------
 local selectedName = nil
-local nameMode = "full"  -- "full" = اسم كامل ، "three" = ثلاث حروف
+local nameMode   = "full"  -- "full" | "three"
+local silentMode = false    -- true = أدمن فقط بدون شات
 
 local function getEffectiveName()
     if not selectedName then return nil end
@@ -661,10 +662,32 @@ local function makeBigBtn(parent, text, posY, color1, color2)
     return b
 end
 
+-- ┌─────────────────────────────────────────────────────────┐
+-- │  ScrollingFrame لخانة النسخ - يمنع خروج الأزرار        │
+-- └─────────────────────────────────────────────────────────┘
+local spamScroll = Instance.new("ScrollingFrame", copyPage)
+spamScroll.Position = UDim2.new(0, 0, 0, 82)
+spamScroll.Size = UDim2.new(1, 0, 1, -112)
+spamScroll.BackgroundTransparency = 1
+spamScroll.BorderSizePixel = 0
+spamScroll.ScrollBarThickness = 4
+spamScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 130)
+spamScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+spamScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+local spamList = Instance.new("UIListLayout", spamScroll)
+spamList.Padding = UDim.new(0, 6)
+spamList.SortOrder = Enum.SortOrder.LayoutOrder
+local spamPad = Instance.new("UIPadding", spamScroll)
+spamPad.PaddingTop = UDim.new(0, 6)
+spamPad.PaddingBottom = UDim.new(0, 6)
+spamPad.PaddingLeft = UDim.new(0, 8)
+spamPad.PaddingRight = UDim.new(0, 8)
+
 -- حقل علامة الأدمن
-local prefixRow = Instance.new("Frame", copyPage)
+local prefixRow = Instance.new("Frame", spamScroll)
 prefixRow.BackgroundTransparency = 1
-prefixRow.Position = UDim2.new(0, 10, 0, 84); prefixRow.Size = UDim2.new(1, -20, 0, 36)
+prefixRow.Size = UDim2.new(1, 0, 0, 36)
+prefixRow.LayoutOrder = 0
 
 local prefixBox = Instance.new("TextBox", prefixRow)
 prefixBox.Size = UDim2.new(0, 48, 1, 0); prefixBox.Position = UDim2.new(0, 0, 0, 0)
@@ -689,10 +712,10 @@ prefixLabel.Text = "اكتب علامة الادمن الخاصة بك"
 -- ┌─────────────────────────────────────────────────────────┐
 -- │  زرا وضع الاسم: اسم كامل / ثلاث حروف                   │
 -- └─────────────────────────────────────────────────────────┘
-local nameModeRow = Instance.new("Frame", copyPage)
+local nameModeRow = Instance.new("Frame", spamScroll)
 nameModeRow.BackgroundTransparency = 1
-nameModeRow.Position = UDim2.new(0, 10, 0, 124)
-nameModeRow.Size = UDim2.new(1, -20, 0, 34)
+nameModeRow.Size = UDim2.new(1, 0, 0, 34)
+nameModeRow.LayoutOrder = 1
 
 local fullNameBtn = Instance.new("TextButton", nameModeRow)
 fullNameBtn.Size = UDim2.new(0.5, -4, 1, 0)
@@ -748,25 +771,83 @@ threeLettersBtn.MouseButton1Click:Connect(function()
 end)
 
 -- ┌─────────────────────────────────────────────────────────┐
--- │  ScrollingFrame لخانة النسخ - يمنع خروج الأزرار        │
+-- │  زر النسخ الخفي / ارجاع للنسخ الظاهر                  │
 -- └─────────────────────────────────────────────────────────┘
-local spamScroll = Instance.new("ScrollingFrame", copyPage)
-spamScroll.Position = UDim2.new(0, 0, 0, 162)
-spamScroll.Size = UDim2.new(1, 0, 1, -190)
-spamScroll.BackgroundTransparency = 1
-spamScroll.BorderSizePixel = 0
-spamScroll.ScrollBarThickness = 4
-spamScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 130)
-spamScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-spamScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-local spamList = Instance.new("UIListLayout", spamScroll)
-spamList.Padding = UDim.new(0, 6)
-spamList.SortOrder = Enum.SortOrder.LayoutOrder
-local spamPad = Instance.new("UIPadding", spamScroll)
-spamPad.PaddingTop = UDim.new(0, 4)
-spamPad.PaddingBottom = UDim.new(0, 4)
-spamPad.PaddingLeft = UDim.new(0, 6)
-spamPad.PaddingRight = UDim.new(0, 6)
+local silentRow = Instance.new("Frame", spamScroll)
+silentRow.BackgroundTransparency = 1
+silentRow.Size = UDim2.new(1, 0, 0, 30)
+silentRow.LayoutOrder = 2
+
+local silentBtn = Instance.new("TextButton", silentRow)
+silentBtn.Size = UDim2.new(1, 0, 1, 0)
+silentBtn.Position = UDim2.new(0, 0, 0, 0)
+silentBtn.BackgroundColor3 = Color3.fromRGB(18, 10, 38)
+silentBtn.BackgroundTransparency = 0.05
+silentBtn.BorderSizePixel = 0
+silentBtn.AutoButtonColor = false
+silentBtn.Font = Enum.Font.GothamBold
+silentBtn.Text = "🔇  تشغيل نسخ خفي"
+silentBtn.TextSize = 13
+silentBtn.TextColor3 = Color3.fromRGB(180, 150, 255)
+Instance.new("UICorner", silentBtn).CornerRadius = UDim.new(0, 9)
+local silentStroke = Instance.new("UIStroke", silentBtn)
+silentStroke.Color = Color3.fromRGB(100, 60, 200)
+silentStroke.Thickness = 1.6
+silentStroke.Transparency = 0.3
+
+-- تحديث مظهر زر النسخ الخفي
+local function updateSilentBtn()
+    if silentMode then
+        -- شغال: لون مشبع + نص "ارجاع" + توهج
+        TweenService:Create(silentBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundColor3 = Color3.fromRGB(80, 30, 180),
+            BackgroundTransparency = 0.0,
+            TextColor3 = Color3.fromRGB(255, 235, 80),
+        }):Play()
+        silentStroke.Color = Color3.fromRGB(180, 120, 255)
+        silentStroke.Thickness = 2.0
+        silentStroke.Transparency = 0.0
+        silentBtn.Text = "👁  ارجاع للنسخ الظاهر"
+    else
+        -- مطفي: داكن هادي
+        TweenService:Create(silentBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            BackgroundColor3 = Color3.fromRGB(18, 10, 38),
+            BackgroundTransparency = 0.05,
+            TextColor3 = Color3.fromRGB(180, 150, 255),
+        }):Play()
+        silentStroke.Color = Color3.fromRGB(100, 60, 200)
+        silentStroke.Thickness = 1.6
+        silentStroke.Transparency = 0.3
+        silentBtn.Text = "🔇  تشغيل نسخ خفي"
+    end
+end
+
+-- نبضة توهج لما يكون شغال
+task.spawn(function()
+    while silentBtn.Parent do
+        if silentMode then
+            TweenService:Create(silentStroke, TweenInfo.new(0.65, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Transparency = 0.55}):Play()
+            task.wait(0.65)
+            TweenService:Create(silentStroke, TweenInfo.new(0.65, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Transparency = 0.0}):Play()
+            task.wait(0.65)
+        else
+            task.wait(0.2)
+        end
+    end
+end)
+
+silentBtn.MouseButton1Click:Connect(function()
+    silentMode = not silentMode
+    updateSilentBtn()
+    if silentMode then
+        setStatus("🔇 النسخ الخفي شغال — أدمن فقط", true)
+        statusLbl.TextColor3 = Color3.fromRGB(200, 160, 255)
+    else
+        statusLbl.TextColor3 = Color3.fromRGB(150, 220, 170)
+        setStatus("👁 رجع للنسخ الظاهر — شات + أدمن")
+    end
+end)
+-- ─────────────────────────────────────────────────────────
 
 local function makeSpamRow(order)
     local row = Instance.new("Frame", spamScroll)
@@ -845,31 +926,31 @@ local function setStartOff(btn)
 end
 
 -- الصف الأول: سبام
-local rowA = makeSpamRow(1)
+local rowA = makeSpamRow(3)
 makeRowLabel(rowA, "سبام")
 local copySpamBtn = makeStartBtn(rowA)
 local stopBtnA    = makeStopBtn(rowA)
 
 -- الصف الثاني: نسخ غامض
-local rowGhost = makeSpamRow(2)
+local rowGhost = makeSpamRow(4)
 makeRowLabel(rowGhost, "نسخ غامض")
 local copyGhostBtn = makeStartBtn(rowGhost)
 local stopBtnGhost = makeStopBtn(rowGhost)
 
 -- الصف الثالث: Logs
-local rowB = makeSpamRow(3)
+local rowB = makeSpamRow(5)
 makeRowLabel(rowB, "Logs")
 local copyLogsBtn = makeStartBtn(rowB)
 local stopBtnB    = makeStopBtn(rowB)
 
 -- الصف الثالث: Re
-local rowC = makeSpamRow(4)
+local rowC = makeSpamRow(6)
 makeRowLabel(rowC, "Re")
 local copyReBtn = makeStartBtn(rowC)
 local stopBtnC  = makeStopBtn(rowC)
 
 -- الصف الرابع: ⚡ سبام قوي
-local rowD = makeSpamRow(5)
+local rowD = makeSpamRow(7)
 makeRowLabel(rowD, "⚡ سبام قوي")
 local copyPowerBtn = makeStartBtn(rowD)
 local stopBtnD     = makeStopBtn(rowD)
@@ -997,9 +1078,13 @@ prefixBox.FocusLost:Connect(function()
 end)
 
 local function sendOnce(message)
-    pcall(function()
-        game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
-    end)
+    if not silentMode then
+        -- وضع ظاهر: شات + أدمن
+        pcall(function()
+            game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
+        end)
+    end
+    -- أدمن دائماً بغض النظر عن الوضع
     if hdRemote then pcall(function() hdRemote:InvokeServer(message) end) end
 end
 
