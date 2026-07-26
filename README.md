@@ -1084,8 +1084,12 @@ local function sendOnce(message)
             game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
         end)
     end
-    -- أدمن دائماً بغض النظر عن الوضع
-    if hdRemote then pcall(function() hdRemote:InvokeServer(message) end) end
+    -- أدمن دائماً بغض النظر عن الوضع — في thread منفصل حتى لا يوقف اللوب
+    if hdRemote then
+        task.spawn(function()
+            pcall(function() hdRemote:InvokeServer(message) end)
+        end)
+    end
 end
 
 local function copyText(t)
