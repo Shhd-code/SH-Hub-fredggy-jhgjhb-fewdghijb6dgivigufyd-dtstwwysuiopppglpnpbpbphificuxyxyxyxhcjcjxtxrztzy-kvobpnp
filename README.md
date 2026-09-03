@@ -1120,7 +1120,7 @@ local function applyPrefix(newPrefix)
  pcall(function()
  if changeSettingRemote then
  local args = {[1] = {[1] = "Prefix", [2] = newPrefix}}
- changeSettingRemote:InvokeServer(unpack(args))
+ changeSettingRemote:InvokeServer(table.unpack(args))
  else
  -- fallback: ابحث عن الريموت مباشرة
  local sig = game:GetService("ReplicatedStorage")
@@ -1130,7 +1130,7 @@ local function applyPrefix(newPrefix)
  local r = sig:FindFirstChild("ChangeSetting")
  if r then
  local args = {[1] = {[1] = "Prefix", [2] = newPrefix}}
- r:InvokeServer(unpack(args))
+ r:InvokeServer(table.unpack(args))
  end
  end
  end
@@ -1854,7 +1854,11 @@ copySkinsBtn.MouseButton1Click:Connect(function()
  ctrlStatus.Text = "جاري تشغيل نسخ السكنات..."
  task.spawn(function()
  local ok, err = pcall(function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Nshk/refs/heads/main/README.md"))()
+ local skinSource = game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Nshk/refs/heads/main/README.md")
+ skinSource = skinSource:gsub("unpack%(%s*args%s*%)", "table.unpack(args)")
+ local skinLoader, skinLoadError = loadstring(skinSource)
+ if type(skinLoader) ~= "function" then error(skinLoadError or "تعذر تحميل سكربت نسخ السكنات") end
+ skinLoader()
  end)
  if ok then ctrlStatus.Text = "تم تشغيل نسخ السكنات"
  else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
