@@ -271,15 +271,15 @@ local function showWhatsNew()
 
  -- النص الرئيسي
  local bodyLines = {
- "✦ اخر الاحداثث✦",
+ "✦ التحديثات الجديدة ✦",
  "",
- "🔹 تم تغيير الإنترو",
- "🔹 تم اضافة نسخ جديد يعلك وعلى ضمانتي ان شاء الله 🙏😘",
- "🔹 تم إضافة نسخ سكنات يهبل جديد وصح سويته من ورا خشمي بس عادي ☺️",
- " • وااا بس كذا التحديثات واعرف محد بيقراها لانكم مش فاضين فبحط باسورد الاغاني هنا",
- " • الباسورد هو MZA",
- "🔹 بس ثنكيو ",
- "🔹 ",
+ "🔹 تم تغيير الإنترو إلى إنترو جديد",
+ "🔹 تم تغيير ريموت الشات في خانة النسخ",
+ "🔹 تم إضافة زرين في خانة النسخ:",
+ " • اسم كامل — يرسل الأوامر بالاسم الكامل",
+ " • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
+ "🔹 تم حذف التايتال لان انتهت الثغرة",
+ "🔹 تم إضافة مراقبة الشات / تقليد الشات",
  "",
  "",
  "",
@@ -1392,8 +1392,7 @@ local function showBigNotice(text)
  okBtn.Position = UDim2.new(0.5, 0, 1, -14); okBtn.Size = UDim2.new(0, 160, 0, 38)
  okBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100); okBtn.BorderSizePixel = 0
  okBtn.Font = Enum.Font.GothamBold; okBtn.Text = "تمام"
- okBtn.TextSize = 18; okBtn.TextC
-…[truncated]olor3 = Color3.fromRGB(0, 0, 0)
+ okBtn.TextSize = 18; okBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
  Instance.new("UICorner", okBtn).CornerRadius = UDim.new(0, 10)
 
  okBtn.MouseButton1Click:Connect(function() pcall(function() nGui:Destroy() end) end)
