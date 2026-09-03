@@ -273,13 +273,13 @@ local function showWhatsNew()
  local bodyLines = {
  "✦ اخر الاحداثث✦",
  "",
- "🔹 تم تغيير الإنترو ",
- "🔹 تم اضافة نسخ جديد يعلك وعلى ضمانتي ان شاء الله 🙏😘 ",
- "🔹 تم إضافة نسخ سكنات يهبل جديد وصح سويته من ورا خشمي بس عادي ☺️ ",
- " • ",
+ "🔹 تم تغيير الإنترو",
+ "🔹 تم اضافة نسخ جديد يعلك وعلى ضمانتي ان شاء الله 🙏😘",
+ "🔹 تم إضافة نسخ سكنات يهبل جديد وصح سويته من ورا خشمي بس عادي ☺️",
  " • وااا بس كذا التحديثات واعرف محد بيقراها لانكم مش فاضين فبحط باسورد الاغاني هنا",
- "🔹 الباسورد هو MZA",
- "🔹 تف تف على ارائكم",
+ " • الباسورد هو MZA",
+ "🔹 بس ثنكيو ",
+ "🔹 ",
  "",
  "",
  "",
@@ -1241,17 +1241,6 @@ stopPatternSpam3Btn.MouseButton1Click:Connect(function()
  if patternSpam3Running then patternSpam3Running = doStop(patternSpam3Running, copyPatternSpam3Btn) end
 end)
 
-copySkinsBtn.MouseButton1Click:Connect(function()
- ctrlStatus.Text = "جاري تشغيل نسخ السكنات..."
- task.spawn(function()
- local ok, err = pcall(function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Nshk/refs/heads/main/README.md"))()
- end)
- if ok then ctrlStatus.Text = "تم تشغيل نسخ السكنات"
- else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
- end)
-end)
-
 -- ── سبام ────────────────────────────────────────────────────
 copySpamBtn.MouseButton1Click:Connect(function()
  if spamARunning then return end
@@ -1858,6 +1847,17 @@ titleBtn.MouseButton1Click:Connect(function()
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/NAH/refs/heads/main/README.md"))()
  end)
  if ok then ctrlStatus.Text = "تم تشغيل مراقبة الشات"
+ else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
+ end)
+end)
+
+copySkinsBtn.MouseButton1Click:Connect(function()
+ ctrlStatus.Text = "جاري تشغيل نسخ السكنات..."
+ task.spawn(function()
+ local ok, err = pcall(function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Nshk/refs/heads/main/README.md"))()
+ end)
+ if ok then ctrlStatus.Text = "تم تشغيل نسخ السكنات"
  else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
  end)
 end)
