@@ -1,6 +1,6 @@
 --[[
     SH Hub - Roblox UI Script
-    Tabs: نسخ (Copy) | تحكم (Control)
+    Tabs: نسخ (Copy) | تحكم (Control) | سبام اكسترا (Extra Spam)
 ]]
 
 local Players = game:GetService("Players")
@@ -56,14 +56,12 @@ local function showTeamCard()
         pcall(function() sg.Parent = CoreGui end)
         if not sg.Parent then sg.Parent = PlayerGui end
 
-        -- خلفية شفافة
         local overlay = Instance.new("Frame", sg)
         overlay.Size = UDim2.new(1, 0, 1, 0)
         overlay.BackgroundColor3 = Color3.new(0, 0, 0)
         overlay.BackgroundTransparency = 0.5
         overlay.BorderSizePixel = 0
 
-        -- البطاقة الرئيسية
         local card = Instance.new("Frame", sg)
         card.Size = UDim2.new(0, 340, 0, 0)
         card.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -89,7 +87,6 @@ local function showTeamCard()
         layout.SortOrder = Enum.SortOrder.LayoutOrder
         layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-        -- عنوان البطاقة
         local title = Instance.new("TextLabel", card)
         title.Size = UDim2.new(1, 0, 0, 26)
         title.BackgroundTransparency = 1
@@ -100,7 +97,6 @@ local function showTeamCard()
         title.TextXAlignment = Enum.TextXAlignment.Center
         title.LayoutOrder = 1
 
-        -- فاصل
         local div = Instance.new("Frame", card)
         div.Size = UDim2.new(1, 0, 0, 1)
         div.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
@@ -108,7 +104,6 @@ local function showTeamCard()
         div.BorderSizePixel = 0
         div.LayoutOrder = 2
 
-        -- دالة إنشاء بطاقة شخص
         local function makePersonCard(username, roleText, order)
             local avatarUrl = getAvatar(username)
 
@@ -120,7 +115,6 @@ local function showTeamCard()
             row.LayoutOrder = order
             Instance.new("UICorner", row).CornerRadius = UDim.new(0, 12)
 
-            -- الصورة
             local img = Instance.new("ImageLabel", row)
             img.Size = UDim2.new(0, 72, 0, 72)
             img.Position = UDim2.new(0, 10, 0.5, -36)
@@ -133,7 +127,6 @@ local function showTeamCard()
             imgStroke.Thickness = 2
             imgStroke.Transparency = 0.1
 
-            -- اسم الحساب
             local nameLbl = Instance.new("TextLabel", row)
             nameLbl.Size = UDim2.new(1, -96, 0, 32)
             nameLbl.Position = UDim2.new(0, 90, 0.5, -30)
@@ -144,7 +137,6 @@ local function showTeamCard()
             nameLbl.TextColor3 = Color3.fromRGB(220, 240, 255)
             nameLbl.TextXAlignment = Enum.TextXAlignment.Right
 
-            -- الدور
             local roleLbl = Instance.new("TextLabel", row)
             roleLbl.Size = UDim2.new(1, -96, 0, 28)
             roleLbl.Position = UDim2.new(0, 90, 0.5, 4)
@@ -156,10 +148,8 @@ local function showTeamCard()
             roleLbl.TextXAlignment = Enum.TextXAlignment.Right
         end
 
-        -- المصممه فقط
         makePersonCard("shhode320", "👑 المصممه", 3)
 
-        -- زر إغلاق
         local closeBtn = Instance.new("TextButton", card)
         closeBtn.Size = UDim2.new(1, 0, 0, 34)
         closeBtn.BackgroundColor3 = Color3.fromRGB(0, 140, 200)
@@ -179,7 +169,6 @@ local function showTeamCard()
             TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 140, 200)}):Play()
         end)
 
-        -- أنيميشن الظهور
         card.BackgroundTransparency = 1
         overlay.BackgroundTransparency = 1
         TweenService:Create(overlay, TweenInfo.new(0.3), {BackgroundTransparency = 0.5}):Play()
@@ -196,16 +185,13 @@ local function showTeamCard()
     end)
 end
 
--- تشغيل الإشعار بعد دقيقتين
 task.delay(120, function()
     showTeamCard()
 end)
 
 ----------------------------------------------------------------
--- Loading splash: SH Zero Protocol (hacker intro)
+-- Loading splash: SH Zero Protocol
 ----------------------------------------------------------------
-
--- ─── نافذة "ما الجديد" تظهر بعد الإنترو ─────────────────────
 local function showWhatsNew()
     local core = game:GetService("CoreGui")
     local wsg = Instance.new("ScreenGui")
@@ -215,14 +201,12 @@ local function showWhatsNew()
     wsg.ResetOnSpawn = false
     wsg.Parent = core
 
-    -- خلفية شفافة داكنة
     local overlay = Instance.new("Frame", wsg)
     overlay.Size = UDim2.new(1, 0, 1, 0)
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.45
     overlay.BorderSizePixel = 0
 
-    -- الإطار الرئيسي
     local card = Instance.new("Frame", wsg)
     card.Size = UDim2.new(0, 400, 0, 0)
     card.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -243,7 +227,6 @@ local function showWhatsNew()
     layout.Padding = UDim.new(0, 10)
     layout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    -- عنوان
     local titleRow = Instance.new("Frame", card)
     titleRow.Size = UDim2.new(1, 0, 0, 30)
     titleRow.BackgroundTransparency = 1
@@ -261,7 +244,6 @@ local function showWhatsNew()
     titleLbl.TextColor3 = Color3.fromRGB(0, 255, 130)
     titleLbl.AutomaticSize = Enum.AutomaticSize.XY
 
-    -- فاصل
     local divider = Instance.new("Frame", card)
     divider.Size = UDim2.new(1, 0, 0, 1)
     divider.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
@@ -269,7 +251,6 @@ local function showWhatsNew()
     divider.BorderSizePixel = 0
     divider.LayoutOrder = 2
 
-    -- النص الرئيسي
     local bodyLines = {
         "✦ التحديثات الجديدة ✦",
         "",
@@ -280,7 +261,7 @@ local function showWhatsNew()
         "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
         "🔹 تم حذف التايتال لان انتهت الثغرة",
         "🔹 تم إضافة مراقبة الشات / تقليد الشات",
-        "",
+        "🔹 تم إضافة خانة (سبام اكسترا) الكاملة",
         "",
         "",
         "حسابي روب: shhode320~",
@@ -299,7 +280,6 @@ local function showWhatsNew()
     bodyLbl.RichText = false
     bodyLbl.LayoutOrder = 3
 
-    -- زر إغلاق
     local closeBtn = Instance.new("TextButton", card)
     closeBtn.Size = UDim2.new(1, 0, 0, 36)
     closeBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 70)
@@ -319,7 +299,6 @@ local function showWhatsNew()
         TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 160, 70)}):Play()
     end)
 
-    -- أنيميشن الظهور (AnchorPoint 0.5,0.5 → نبدأ من أسفل قليلاً)
     card.Position = UDim2.new(0.5, 0, 0.65, 0)
     card.BackgroundTransparency = 1
     TweenService:Create(card, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
@@ -336,7 +315,6 @@ local function showWhatsNew()
     closeBtn.MouseButton1Click:Connect(closeWhatsNew)
 end
 
--- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
     pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
@@ -395,9 +373,6 @@ title.Font = Enum.Font.GothamBlack; title.Text = "sh + K4 + IFQ"
 title.TextSize = 22; title.TextColor3 = Color3.fromRGB(0, 255, 130)
 title.TextXAlignment = Enum.TextXAlignment.Left
 
-----------------------------------------------------------------
--- Top buttons (close X + minimize circle)
-----------------------------------------------------------------
 local closeBtn = Instance.new("TextButton", main)
 closeBtn.AnchorPoint = Vector2.new(1, 0)
 closeBtn.Position = UDim2.new(1, -8, 0, 8)
@@ -413,7 +388,6 @@ closeStroke.Color = Color3.fromRGB(0, 200, 100); closeStroke.Transparency = 0.4
 closeBtn.MouseEnter:Connect(function() TweenService:Create(closeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.1}):Play() end)
 closeBtn.MouseLeave:Connect(function() TweenService:Create(closeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.3}):Play() end)
 
--- circle minimize
 local minBtn = Instance.new("TextButton", main)
 minBtn.AnchorPoint = Vector2.new(1, 0)
 minBtn.Position = UDim2.new(1, -44, 0, 8)
@@ -421,15 +395,12 @@ minBtn.Size = UDim2.new(0, 28, 0, 28)
 minBtn.BackgroundColor3 = Color3.fromRGB(0, 90, 45)
 minBtn.BackgroundTransparency = 0.2; minBtn.BorderSizePixel = 0
 minBtn.Text = ""; minBtn.AutoButtonColor = false
-Instance.new("UICorner", minBtn).CornerRadius = UDim.new(1, 0) -- full circle
+Instance.new("UICorner", minBtn).CornerRadius = UDim.new(1, 0)
 local minStroke = Instance.new("UIStroke", minBtn)
 minStroke.Color = Color3.fromRGB(0, 255, 130); minStroke.Transparency = 0.2; minStroke.Thickness = 1.4
 minBtn.MouseEnter:Connect(function() TweenService:Create(minBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0}):Play() end)
 minBtn.MouseLeave:Connect(function() TweenService:Create(minBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.2}):Play() end)
 
-----------------------------------------------------------------
--- Floating mini circle (when hidden)
-----------------------------------------------------------------
 local miniGui = Instance.new("ScreenGui")
 miniGui.Name = "SHMini"; miniGui.ResetOnSpawn = false; miniGui.IgnoreGuiInset = true
 miniGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling; miniGui.DisplayOrder = 9001
@@ -447,12 +418,11 @@ miniBubble.Text = "SH"
 miniBubble.Font = Enum.Font.GothamBlack
 miniBubble.TextSize = 14
 miniBubble.TextColor3 = Color3.fromRGB(230, 255, 240)
-miniBubble.Visible = false
+miniBubble.Visible = true
 Instance.new("UICorner", miniBubble).CornerRadius = UDim.new(1, 0)
 local miniStroke = Instance.new("UIStroke", miniBubble)
 miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 1.6; miniStroke.Transparency = 0.2
 
--- pulse
 task.spawn(function()
     while miniGui.Parent do
         if miniBubble.Visible then
@@ -463,8 +433,6 @@ task.spawn(function()
         end
     end
 end)
-
-miniBubble.Visible = true
 
 local function setHidden(hidden)
     if hidden then
@@ -491,9 +459,6 @@ closeBtn.MouseButton1Click:Connect(function()
     task.wait(0.22); gui:Destroy(); miniGui:Destroy()
 end)
 
-----------------------------------------------------------------
--- Drag main + mini
-----------------------------------------------------------------
 local function makeDraggable(handle, target)
     local dragging, dragStart, startPos
     handle.InputBegan:Connect(function(input)
@@ -527,9 +492,9 @@ local pages, tabButtons = {}, {}
 
 local function makeTab(name)
     local btn = Instance.new("TextButton", tabBar)
-    btn.Size = UDim2.new(0, 130, 1, 0); btn.BackgroundColor3 = Color3.fromRGB(8, 30, 14)
+    btn.Size = UDim2.new(0, 110, 1, 0); btn.BackgroundColor3 = Color3.fromRGB(8, 30, 14)
     btn.BackgroundTransparency = 0.4; btn.BorderSizePixel = 0; btn.AutoButtonColor = false
-    btn.Font = Enum.Font.GothamBold; btn.Text = name; btn.TextSize = 15
+    btn.Font = Enum.Font.GothamBold; btn.Text = name; btn.TextSize = 14
     btn.TextColor3 = Color3.fromRGB(160, 230, 180)
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 10)
     local s = Instance.new("UIStroke", btn); s.Color = Color3.fromRGB(0, 200, 100); s.Transparency = 0.6
@@ -560,7 +525,7 @@ local controlPage = makeTab("تحكم")
 local extraPage   = makeTab("سبام اكسترا")
 
 ----------------------------------------------------------------
--- Page: نسخ
+-- Page: نسخ (Copy)
 ----------------------------------------------------------------
 local selectedName = nil
 local nameMode   = "full"
@@ -656,6 +621,7 @@ local prefixBox = Instance.new("TextBox", prefixRow)
 prefixBox.Size = UDim2.new(0, 48, 1, 0); prefixBox.Position = UDim2.new(0, 0, 0, 0)
 prefixBox.BackgroundColor3 = Color3.fromRGB(20, 80, 180); prefixBox.BackgroundTransparency = 0.15
 prefixBox.BorderSizePixel = 0; prefixBox.Text = ";"
+prefixBox.PlaceholderText = ";"
 prefixBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 prefixBox.Font = Enum.Font.GothamBold; prefixBox.TextSize = 18
 prefixBox.ClearTextOnFocus = false
@@ -718,14 +684,8 @@ local function updateNameModeUI()
     end
 end
 
-fullNameBtn.MouseButton1Click:Connect(function()
-    nameMode = "full"
-    updateNameModeUI()
-end)
-threeLettersBtn.MouseButton1Click:Connect(function()
-    nameMode = "three"
-    updateNameModeUI()
-end)
+fullNameBtn.MouseButton1Click:Connect(function() nameMode = "full"; updateNameModeUI() end)
+threeLettersBtn.MouseButton1Click:Connect(function() nameMode = "three"; updateNameModeUI() end)
 
 local silentRow = Instance.new("Frame", spamScroll)
 silentRow.BackgroundTransparency = 1
@@ -745,29 +705,15 @@ silentBtn.TextSize = 13
 silentBtn.TextColor3 = Color3.fromRGB(180, 150, 255)
 Instance.new("UICorner", silentBtn).CornerRadius = UDim.new(0, 9)
 local silentStroke = Instance.new("UIStroke", silentBtn)
-silentStroke.Color = Color3.fromRGB(100, 60, 200)
-silentStroke.Thickness = 1.6
-silentStroke.Transparency = 0.3
+silentStroke.Color = Color3.fromRGB(100, 60, 200); silentStroke.Thickness = 1.6; silentStroke.Transparency = 0.3
 
 local function updateSilentBtn()
     if silentMode then
-        TweenService:Create(silentBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-            BackgroundColor3 = Color3.fromRGB(80, 30, 180),
-            BackgroundTransparency = 0.0,
-            TextColor3 = Color3.fromRGB(255, 235, 80),
-        }):Play()
-        silentStroke.Color = Color3.fromRGB(180, 120, 255)
-        silentStroke.Thickness = 2.0
+        TweenService:Create(silentBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(80, 30, 180), BackgroundTransparency = 0.0, TextColor3 = Color3.fromRGB(255, 235, 80)}):Play()
         silentStroke.Transparency = 0.0
         silentBtn.Text = "👁  ارجاع للنسخ الظاهر"
     else
-        TweenService:Create(silentBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-            BackgroundColor3 = Color3.fromRGB(18, 10, 38),
-            BackgroundTransparency = 0.05,
-            TextColor3 = Color3.fromRGB(180, 150, 255),
-        }):Play()
-        silentStroke.Color = Color3.fromRGB(100, 60, 200)
-        silentStroke.Thickness = 1.6
+        TweenService:Create(silentBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(18, 10, 38), BackgroundTransparency = 0.05, TextColor3 = Color3.fromRGB(180, 150, 255)}):Play()
         silentStroke.Transparency = 0.3
         silentBtn.Text = "🔇  تشغيل نسخ خفي"
     end
@@ -788,15 +734,10 @@ end
 
 local function makeRowLabel(parent, text)
     local lbl = Instance.new("TextLabel", parent)
-    lbl.Position = UDim2.new(0, 0, 0, 0)
-    lbl.Size = UDim2.new(0.34, -4, 1, 0)
-    lbl.BackgroundColor3 = Color3.fromRGB(8, 25, 14)
-    lbl.BackgroundTransparency = 0.3
-    lbl.BorderSizePixel = 0
-    lbl.Font = Enum.Font.GothamBold
-    lbl.Text = text
-    lbl.TextSize = 14
-    lbl.TextColor3 = Color3.fromRGB(200, 255, 215)
+    lbl.Position = UDim2.new(0, 0, 0, 0); lbl.Size = UDim2.new(0.34, -4, 1, 0)
+    lbl.BackgroundColor3 = Color3.fromRGB(8, 25, 14); lbl.BackgroundTransparency = 0.3
+    lbl.BorderSizePixel = 0; lbl.Font = Enum.Font.GothamBold; lbl.Text = text
+    lbl.TextSize = 14; lbl.TextColor3 = Color3.fromRGB(200, 255, 215)
     lbl.TextXAlignment = Enum.TextXAlignment.Center
     Instance.new("UICorner", lbl).CornerRadius = UDim.new(0, 10)
     return lbl
@@ -804,33 +745,21 @@ end
 
 local function makeStartBtn(parent)
     local b = Instance.new("TextButton", parent)
-    b.Position = UDim2.new(0.35, 2, 0, 0)
-    b.Size = UDim2.new(0.33, -2, 1, 0)
-    b.BackgroundColor3 = Color3.fromRGB(180, 25, 25)
-    b.BackgroundTransparency = 0.05
-    b.BorderSizePixel = 0; b.AutoButtonColor = false
-    b.Font = Enum.Font.GothamBold
-    b.Text = "تشغيل"
-    b.TextSize = 14
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.Position = UDim2.new(0.35, 2, 0, 0); b.Size = UDim2.new(0.33, -2, 1, 0)
+    b.BackgroundColor3 = Color3.fromRGB(180, 25, 25); b.BackgroundTransparency = 0.05
+    b.BorderSizePixel = 0; b.AutoButtonColor = false; b.Font = Enum.Font.GothamBold
+    b.Text = "تشغيل"; b.TextSize = 14; b.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
-    local s = Instance.new("UIStroke", b)
-    s.Color = Color3.fromRGB(255, 80, 80)
-    s.Transparency = 0.2; s.Thickness = 1.8
+    local s = Instance.new("UIStroke", b); s.Color = Color3.fromRGB(255, 80, 80); s.Transparency = 0.2; s.Thickness = 1.8
     return b
 end
 
 local function makeStopBtn(parent)
     local b = Instance.new("TextButton", parent)
-    b.Position = UDim2.new(0.69, 3, 0, 0)
-    b.Size = UDim2.new(0.31, -3, 1, 0)
-    b.BackgroundColor3 = Color3.fromRGB(55, 55, 65)
-    b.BackgroundTransparency = 0.05
-    b.BorderSizePixel = 0; b.AutoButtonColor = false
-    b.Font = Enum.Font.GothamBold
-    b.Text = "ايقاف"
-    b.TextSize = 14
-    b.TextColor3 = Color3.fromRGB(210, 210, 225)
+    b.Position = UDim2.new(0.69, 3, 0, 0); b.Size = UDim2.new(0.31, -3, 1, 0)
+    b.BackgroundColor3 = Color3.fromRGB(55, 55, 65); b.BackgroundTransparency = 0.05
+    b.BorderSizePixel = 0; b.AutoButtonColor = false; b.Font = Enum.Font.GothamBold
+    b.Text = "ايقاف"; b.TextSize = 14; b.TextColor3 = Color3.fromRGB(210, 210, 225)
     Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
     return b
 end
@@ -841,7 +770,6 @@ local function setStartOn(btn)
     if s then s.Color = Color3.fromRGB(0, 255, 130) end
     btn.Text = "شغال ✓"
 end
-
 local function setStartOff(btn)
     TweenService:Create(btn, TweenInfo.new(0.18), {BackgroundColor3 = Color3.fromRGB(180, 25, 25)}):Play()
     local s = btn:FindFirstChildOfClass("UIStroke")
@@ -849,30 +777,11 @@ local function setStartOff(btn)
     btn.Text = "تشغيل"
 end
 
-local rowA = makeSpamRow(3)
-makeRowLabel(rowA, "سبام")
-local copySpamBtn = makeStartBtn(rowA)
-local stopBtnA    = makeStopBtn(rowA)
-
-local rowGhost = makeSpamRow(4)
-makeRowLabel(rowGhost, "نسخ غامض")
-local copyGhostBtn = makeStartBtn(rowGhost)
-local stopBtnGhost = makeStopBtn(rowGhost)
-
-local rowB = makeSpamRow(5)
-makeRowLabel(rowB, "Logs")
-local copyLogsBtn = makeStartBtn(rowB)
-local stopBtnB    = makeStopBtn(rowB)
-
-local rowC = makeSpamRow(6)
-makeRowLabel(rowC, "Re")
-local copyReBtn = makeStartBtn(rowC)
-local stopBtnC  = makeStopBtn(rowC)
-
-local rowD = makeSpamRow(7)
-makeRowLabel(rowD, "⚡ سبام قوي")
-local copyPowerBtn = makeStartBtn(rowD)
-local stopBtnD     = makeStopBtn(rowD)
+local rowA = makeSpamRow(3); makeRowLabel(rowA, "سبام"); local copySpamBtn = makeStartBtn(rowA); local stopBtnA = makeStopBtn(rowA)
+local rowGhost = makeSpamRow(4); makeRowLabel(rowGhost, "نسخ غامض"); local copyGhostBtn = makeStartBtn(rowGhost); local stopBtnGhost = makeStopBtn(rowGhost)
+local rowB = makeSpamRow(5); makeRowLabel(rowB, "Logs"); local copyLogsBtn = makeStartBtn(rowB); local stopBtnB = makeStopBtn(rowB)
+local rowC = makeSpamRow(6); makeRowLabel(rowC, "Re"); local copyReBtn = makeStartBtn(rowC); local stopBtnC = makeStopBtn(rowC)
+local rowD = makeSpamRow(7); makeRowLabel(rowD, "⚡ سبام قوي"); local copyPowerBtn = makeStartBtn(rowD); local stopBtnD = makeStopBtn(rowD)
 
 local statusLbl = Instance.new("TextLabel", copyPage)
 statusLbl.BackgroundTransparency = 1
@@ -880,15 +789,8 @@ statusLbl.Position = UDim2.new(0, 10, 1, -28); statusLbl.Size = UDim2.new(1, -20
 statusLbl.Font = Enum.Font.GothamSemibold; statusLbl.TextSize = 13
 statusLbl.TextColor3 = Color3.fromRGB(150, 220, 170); statusLbl.Text = ""
 
-local function setStatus(txt, persistent)
-    statusLbl.Text = txt; statusLbl.TextTransparency = 0
-    if not persistent then
-        task.delay(2.5, function()
-            if statusLbl.Text == txt then
-                TweenService:Create(statusLbl, TweenInfo.new(0.6), {TextTransparency = 1}):Play()
-            end
-        end)
-    end
+local function setStatus(txt)
+    statusLbl.Text = txt
 end
 
 local function buildLogsCmd(name, prefix)
@@ -923,11 +825,7 @@ end
 
 local function buildPowerSpam(name, prefix)
     prefix = prefix or ";"
-    local cmds = {
-        "apparate "..name.." inf", "fling "..name, "jp "..name.." inf", "jc "..name,
-        "ice "..name, "emotes "..name, "phase "..name, "cmdbar "..name,
-        "nv "..name, "jump "..name, "re "..name, "res "..name, "kill "..name, "ping "..name,
-    }
+    local cmds = {"apparate "..name.." inf", "fling "..name, "jp "..name.." inf", "jc "..name, "ice "..name, "emotes "..name, "phase "..name, "cmdbar "..name, "nv "..name, "jump "..name, "re "..name, "res "..name, "kill "..name, "ping "..name}
     local out = {}
     for i, c in ipairs(cmds) do out[i] = prefix..c end
     return table.concat(out, " ")
@@ -939,7 +837,7 @@ pcall(function()
     if hd then
         local sig = hd:FindFirstChild("Signals")
         if sig then
-            hdRemote            = sig:FindFirstChild("RequestCommandModification")
+            hdRemote = sig:FindFirstChild("RequestCommandModification")
             changeSettingRemote = sig:FindFirstChild("ChangeSetting")
         end
     end
@@ -949,30 +847,22 @@ local function applyPrefix(newPrefix)
     if newPrefix == "" then newPrefix = ";" end
     pcall(function()
         if changeSettingRemote then
-            local args = {[1] = {[1] = "Prefix", [2] = newPrefix}}
-            changeSettingRemote:InvokeServer(unpack(args))
+            changeSettingRemote:InvokeServer({ { "Prefix", newPrefix } })
         end
     end)
-    setStatus("✓ علامة الأدمن: " .. newPrefix)
 end
 
 prefixBox.FocusLost:Connect(function()
-    local val = prefixBox.Text
-    if val == "" then val = ";" prefixBox.Text = ";" end
-    applyPrefix(val)
+    applyPrefix(prefixBox.Text)
 end)
 
 local function sendOnce(message)
     if not silentMode then
         pcall(function()
-            game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
+            ReplicatedStorage.RemoteEvents.DataService:FireServer(message)
         end)
     end
-    if hdRemote then
-        task.spawn(function()
-            pcall(function() hdRemote:InvokeServer(message) end)
-        end)
-    end
+    if hdRemote then pcall(function() hdRemote:InvokeServer(message) end) end
 end
 
 local spamRunning = false
@@ -981,13 +871,11 @@ local spamThread
 local function stopSpam()
     spamRunning = false
     spamThread = nil
-    setStatus("تم إيقاف السبام")
 end
 
 local function startSpam(message)
     if spamRunning then stopSpam(); task.wait(0.05) end
     spamRunning = true
-    setStatus("السبام شغال...", true)
     spamThread = task.spawn(function()
         while spamRunning do
             sendOnce(message)
@@ -996,11 +884,7 @@ local function startSpam(message)
     end)
 end
 
-local spamARunning     = false
-local ghostSpamRunning = false
-local logsSpamRunning  = false
-local reSpamRunning    = false
-local powerSpamRunning = false
+local spamARunning, ghostSpamRunning, logsSpamRunning, reSpamRunning, powerSpamRunning = false, false, false, false, false
 
 local function doStop(startBtn)
     stopSpam()
@@ -1011,60 +895,45 @@ end
 copySpamBtn.MouseButton1Click:Connect(function()
     if spamARunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildSpamA(getEffectiveName(), prefix))
+    startSpam(buildSpamA(getEffectiveName(), prefixBox.Text))
     spamARunning = true; setStartOn(copySpamBtn)
 end)
-stopBtnA.MouseButton1Click:Connect(function()
-    if spamARunning then spamARunning = doStop(copySpamBtn) end
-end)
+stopBtnA.MouseButton1Click:Connect(function() if spamARunning then spamARunning = doStop(copySpamBtn) end end)
 
 copyGhostBtn.MouseButton1Click:Connect(function()
     if ghostSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildGhostSpam(getEffectiveName(), prefix))
+    startSpam(buildGhostSpam(getEffectiveName(), prefixBox.Text))
     ghostSpamRunning = true; setStartOn(copyGhostBtn)
 end)
-stopBtnGhost.MouseButton1Click:Connect(function()
-    if ghostSpamRunning then ghostSpamRunning = doStop(copyGhostBtn) end
-end)
+stopBtnGhost.MouseButton1Click:Connect(function() if ghostSpamRunning then ghostSpamRunning = doStop(copyGhostBtn) end end)
 
 copyLogsBtn.MouseButton1Click:Connect(function()
     if logsSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildLogsCmd(getEffectiveName(), prefix))
+    startSpam(buildLogsCmd(getEffectiveName(), prefixBox.Text))
     logsSpamRunning = true; setStartOn(copyLogsBtn)
 end)
-stopBtnB.MouseButton1Click:Connect(function()
-    if logsSpamRunning then logsSpamRunning = doStop(copyLogsBtn) end
-end)
+stopBtnB.MouseButton1Click:Connect(function() if logsSpamRunning then logsSpamRunning = doStop(copyLogsBtn) end end)
 
 copyReBtn.MouseButton1Click:Connect(function()
     if reSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildReCmd(getEffectiveName(), prefix))
+    startSpam(buildReCmd(getEffectiveName(), prefixBox.Text))
     reSpamRunning = true; setStartOn(copyReBtn)
 end)
-stopBtnC.MouseButton1Click:Connect(function()
-    if reSpamRunning then reSpamRunning = doStop(copyReBtn) end
-end)
+stopBtnC.MouseButton1Click:Connect(function() if reSpamRunning then reSpamRunning = doStop(copyReBtn) end end)
 
 copyPowerBtn.MouseButton1Click:Connect(function()
     if powerSpamRunning then return end
     if not selectedName then setStatus("اختر لاعب اولا") return end
-    local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
-    startSpam(buildPowerSpam(getEffectiveName(), prefix))
+    startSpam(buildPowerSpam(getEffectiveName(), prefixBox.Text))
     powerSpamRunning = true; setStartOn(copyPowerBtn)
 end)
-stopBtnD.MouseButton1Click:Connect(function()
-    if powerSpamRunning then powerSpamRunning = doStop(copyPowerBtn) end
-end)
+stopBtnD.MouseButton1Click:Connect(function() if powerSpamRunning then powerSpamRunning = doStop(copyPowerBtn) end end)
 
 ----------------------------------------------------------------
--- Page: تحكم
+-- Page: تحكم (Control)
 ----------------------------------------------------------------
 local ctrlInfo = Instance.new("TextLabel", controlPage)
 ctrlInfo.BackgroundTransparency = 1
@@ -1076,24 +945,19 @@ ctrlInfo.TextXAlignment = Enum.TextXAlignment.Left
 local ctrlScroll = Instance.new("ScrollingFrame", controlPage)
 ctrlScroll.Position = UDim2.new(0, 0, 0, 40)
 ctrlScroll.Size = UDim2.new(1, 0, 1, -70)
-ctrlScroll.BackgroundTransparency = 1
-ctrlScroll.BorderSizePixel = 0
-ctrlScroll.ScrollBarThickness = 4
-ctrlScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 100)
-ctrlScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+ctrlScroll.BackgroundTransparency = 1; ctrlScroll.BorderSizePixel = 0
+ctrlScroll.ScrollBarThickness = 4; ctrlScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ctrlScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 
-local function makeBigBtn(parent, text, posY, color1, color2)
+local function makeBigBtn(parent, text, posY, c1, c2)
     local b = Instance.new("TextButton", parent)
     b.Position = UDim2.new(0, 10, 0, posY); b.Size = UDim2.new(1, -20, 0, 46)
-    b.BackgroundColor3 = Color3.fromRGB(0, 110, 55); b.BackgroundTransparency = 0.15
-    b.BorderSizePixel = 0; b.AutoButtonColor = false
-    b.Font = Enum.Font.GothamBlack; b.Text = text; b.TextSize = 16
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.BackgroundColor3 = c1; b.BackgroundTransparency = 0.15; b.BorderSizePixel = 0
+    b.AutoButtonColor = false; b.Font = Enum.Font.GothamBlack; b.Text = text
+    b.TextSize = 16; b.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
-    local s = Instance.new("UIStroke", b); s.Color = Color3.fromRGB(0, 255, 130); s.Transparency = 0.3
     local g = Instance.new("UIGradient", b)
-    g.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, color1), ColorSequenceKeypoint.new(1, color2)}
+    g.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, c1), ColorSequenceKeypoint.new(1, c2)}
     g.Rotation = 90
     return b
 end
@@ -1109,76 +973,91 @@ local logsBtn      = makeBigBtn(ctrlScroll, "حماية من logs / clogs", 382,
 local titleBtn     = makeBigBtn(ctrlScroll, "تقليد الشات", 436, Color3.fromRGB(170, 70, 220), Color3.fromRGB(100, 30, 150))
 local allBtn       = makeBigBtn(ctrlScroll, "نسخ all", 490, Color3.fromRGB(30, 180, 255), Color3.fromRGB(10, 100, 180))
 local blueBtn      = makeBigBtn(ctrlScroll, "نسخه معدلة من سكربت بلو", 544, Color3.fromRGB(0, 120, 255), Color3.fromRGB(0, 60, 160))
-local afkBtn       = makeBigBtn(ctrlScroll, "تحكم في شات ال afk أو أحد مايعرف يسولف", 598, Color3.fromRGB(255, 160, 0), Color3.fromRGB(180, 90, 0))
+local afkBtn       = makeBigBtn(ctrlScroll, "تحكم في شات ال afk", 598, Color3.fromRGB(255, 160, 0), Color3.fromRGB(180, 90, 0))
 
 local ctrlStatus = Instance.new("TextLabel", controlPage)
 ctrlStatus.BackgroundTransparency = 1
 ctrlStatus.Position = UDim2.new(0, 10, 1, -28); ctrlStatus.Size = UDim2.new(1, -20, 0, 22)
 ctrlStatus.Font = Enum.Font.GothamSemibold; ctrlStatus.TextSize = 13
 ctrlStatus.TextColor3 = Color3.fromRGB(150, 220, 170); ctrlStatus.Text = ""
-ctrlStatus.TextXAlignment = Enum.TextXAlignment.Left
 
 dancesBtn.MouseButton1Click:Connect(function()
     task.spawn(function()
         pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))() end)
-        ctrlStatus.Text = "تم تشغيل الرقصات"
     end)
+    ctrlStatus.Text = "تم تشغيل الرقصات"
 end)
 
 loadBtn.MouseButton1Click:Connect(function()
     task.spawn(function()
         pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Raduooo/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل تحكم الراديو"
     end)
+    ctrlStatus.Text = "تم تشغيل تحكم الراديو"
 end)
 
-spinStartBtn.MouseButton1Click:Connect(function() ctrlStatus.Text = "تم تشغيل الدوران" end)
-spinStopBtn.MouseButton1Click:Connect(function() ctrlStatus.Text = "تم إيقاف الدوران" end)
+hideBtn.MouseButton1Click:Connect(function()
+    PlayerGui.DescendantAdded:Connect(function(d)
+        if d:IsA("TextLabel") or d:IsA("TextBox") then
+            pcall(function() if d.Text:find("Sending commands") then d.Parent:Destroy() end end)
+        end
+    end)
+    ctrlStatus.Text = "تم تفعيل اخفاء رسائل السبام"
+end)
+
+local spinning = false
+game:GetService("RunService").Heartbeat:Connect(function()
+    if spinning and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(50), 0)
+    end
+end)
+spinStartBtn.MouseButton1Click:Connect(function() spinning = true; ctrlStatus.Text = "تم تشغيل الدوران" end)
+spinStopBtn.MouseButton1Click:Connect(function() spinning = false; ctrlStatus.Text = "تم إيقاف الدوران" end)
+
+logsBtn.MouseButton1Click:Connect(function()
+    task.spawn(function()
+        while task.wait(0.1) do
+            for _, g in ipairs(PlayerGui:GetChildren()) do
+                if g:IsA("ScreenGui") and (g.Name:find("Log") or g.Name:find("Admin")) then
+                    pcall(function() g:Destroy() end)
+                end
+            end
+        end
+    end)
+    ctrlStatus.Text = "تم تفعيل حماية logs"
+end)
 
 titleBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/NAH/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل مراقبة الشات"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/NAH/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل تقليد الشات"
 end)
 
 spamBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/SH_spam_neo/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل السبام"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/SH_spam_neo/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل السبام"
 end)
 
 skinsBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Skinn-neooo/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل السكنات"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Skinn-neooo/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل السكنات"
 end)
 
 allBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/All/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل نسخ all"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/All/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل نسخ all"
 end)
 
 blueBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Blsh/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل نسخه معدلة من سكربت بلو"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Blsh/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل نسخة بلو"
 end)
 
 afkBtn.MouseButton1Click:Connect(function()
-    task.spawn(function()
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Afk/refs/heads/main/README.md"))() end)
-        ctrlStatus.Text = "تم تشغيل AFK ✅"
-    end)
+    task.spawn(function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Afk/refs/heads/main/README.md"))() end) end)
+    ctrlStatus.Text = "تم تشغيل AFK"
 end)
 
 ----------------------------------------------------------------
--- Page: سبام اكسترا (تم الإصلاح والاكتكال الكامل)
+-- Page: سبام اكسترا (Extra Spam - Full Fixed)
 ----------------------------------------------------------------
 do
     local ex_GREEN_A = Color3.fromRGB(0, 255, 120)
@@ -1202,6 +1081,8 @@ do
     ex_pbLayout.Padding = UDim.new(0, 6)
     ex_pbLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ex_pbLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    local ex_pbPad = Instance.new("UIPadding", ex_playersBar)
+    ex_pbPad.PaddingLeft = UDim.new(0, 8); ex_pbPad.PaddingRight = UDim.new(0, 8)
 
     local ex_selectedLabel = Instance.new("TextLabel", extraPage)
     ex_selectedLabel.BackgroundTransparency = 1
@@ -1228,57 +1109,124 @@ do
     ex_prefixBox.TextColor3 = ex_YELLOW; ex_prefixBox.ClearTextOnFocus = false
     Instance.new("UICorner", ex_prefixBox).CornerRadius = UDim.new(0, 8)
 
+    local ex_selectedName = nil
+    local ex_nameMode = "full"
+
+    local function ex_makeToggle(parent, text, xOffset)
+        local b = Instance.new("TextButton", parent)
+        b.Position = UDim2.new(0, xOffset, 0, 0); b.Size = UDim2.new(0, 100, 1, 0)
+        b.BackgroundColor3 = Color3.fromRGB(25, 55, 30); b.BackgroundTransparency = 0.1
+        b.BorderSizePixel = 0; b.AutoButtonColor = false
+        b.Font = Enum.Font.GothamBold; b.Text = text; b.TextSize = 14
+        b.TextColor3 = ex_WHITE
+        Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+        local s = Instance.new("UIStroke", b)
+        s.Color = Color3.fromRGB(0,0,0); s.Transparency = 0.0; s.Thickness = 1.5
+        return b, s
+    end
+
+    local ex_fullNameBtn, ex_fnStroke = ex_makeToggle(ex_settingsRow, "اسم كامل", 122)
+    local ex_threeBtn,   ex_tlStroke  = ex_makeToggle(ex_settingsRow, "٣ حروف",   226)
+
+    local function ex_updateNameModeUI()
+        if ex_nameMode == "full" then
+            ex_fullNameBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 80)
+            ex_threeBtn.BackgroundColor3 = Color3.fromRGB(25, 55, 30)
+        else
+            ex_fullNameBtn.BackgroundColor3 = Color3.fromRGB(25, 55, 30)
+            ex_threeBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 80)
+        end
+    end
+
+    ex_fullNameBtn.MouseButton1Click:Connect(function() ex_nameMode = "full"; ex_updateNameModeUI() end)
+    ex_threeBtn.MouseButton1Click:Connect(function() ex_nameMode = "three"; ex_updateNameModeUI() end)
+
+    local function ex_refreshPlayers()
+        for _, c in ipairs(ex_playersBar:GetChildren()) do
+            if c:IsA("TextButton") then c:Destroy() end
+        end
+        for _, p in ipairs(Players:GetPlayers()) do
+            if p ~= LocalPlayer then
+                local chip = Instance.new("TextButton", ex_playersBar)
+                chip.Size = UDim2.new(0, 0, 1, -8); chip.AutomaticSize = Enum.AutomaticSize.X
+                chip.BackgroundColor3 = Color3.fromRGB(10, 35, 18); chip.BackgroundTransparency = 0.2
+                chip.BorderSizePixel = 0; chip.AutoButtonColor = false
+                chip.Font = Enum.Font.GothamBold; chip.Text = "  " .. p.Name .. "  "
+                chip.TextSize = 13; chip.TextColor3 = Color3.fromRGB(200, 255, 215)
+                Instance.new("UICorner", chip).CornerRadius = UDim.new(0, 8)
+                chip.MouseButton1Click:Connect(function()
+                    ex_selectedName = p.Name
+                    ex_selectedLabel.Text = "تم اختيار: " .. p.Name
+                end)
+            end
+        end
+    end
+    ex_refreshPlayers()
+    Players.PlayerAdded:Connect(ex_refreshPlayers)
+    Players.PlayerRemoving:Connect(ex_refreshPlayers)
+
+    local ex_cmdLbl = Instance.new("TextLabel", extraPage)
+    ex_cmdLbl.Position = UDim2.new(0, 4, 0, 104); ex_cmdLbl.Size = UDim2.new(1, -8, 0, 16)
+    ex_cmdLbl.BackgroundTransparency = 1; ex_cmdLbl.Font = Enum.Font.GothamBold; ex_cmdLbl.TextSize = 14
+    ex_cmdLbl.TextColor3 = ex_LBLUE; ex_cmdLbl.TextXAlignment = Enum.TextXAlignment.Left
+    ex_cmdLbl.Text = "✏ اكتب الأمر أو الكلام (يتكرر 35 مرة):"
+
     local ex_cmdBox = Instance.new("TextBox", extraPage)
-    ex_cmdBox.Position = UDim2.new(0, 0, 0, 122); ex_cmdBox.Size = UDim2.new(1, 0, 0, 56)
+    ex_cmdBox.Position = UDim2.new(0, 0, 0, 122); ex_cmdBox.Size = UDim2.new(1, 0, 0, 46)
     ex_cmdBox.BackgroundColor3 = Color3.fromRGB(12, 38, 20); ex_cmdBox.BackgroundTransparency = 0.05
     ex_cmdBox.BorderSizePixel = 0; ex_cmdBox.Font = Enum.Font.GothamBold
     ex_cmdBox.Text = ""; ex_cmdBox.TextSize = 15
     ex_cmdBox.TextColor3 = ex_WHITE
-    ex_cmdBox.PlaceholderText = "مثال:  ;re   أو   ;re ;logs"
+    ex_cmdBox.PlaceholderText = "مثال:  ;re   أو   ;logs"
+    ex_cmdBox.PlaceholderColor3 = Color3.fromRGB(130, 190, 150)
     ex_cmdBox.ClearTextOnFocus = false
     Instance.new("UICorner", ex_cmdBox).CornerRadius = UDim.new(0, 10)
 
-    local ex_btnsRow = Instance.new("Frame", extraPage)
-    ex_btnsRow.Position = UDim2.new(0, 0, 0, 184); ex_btnsRow.Size = UDim2.new(1, 0, 0, 40)
-    ex_btnsRow.BackgroundTransparency = 1; ex_btnsRow.BorderSizePixel = 0
-
-    local ex_startBtn = Instance.new("TextButton", ex_btnsRow)
-    ex_startBtn.Position = UDim2.new(0, 0, 0, 0); ex_startBtn.Size = UDim2.new(0.62, -4, 1, 0)
-    ex_startBtn.BackgroundColor3 = Color3.fromRGB(0, 175, 80)
-    ex_startBtn.BorderSizePixel = 0; ex_startBtn.AutoButtonColor = false
-    ex_startBtn.Font = Enum.Font.GothamBold; ex_startBtn.Text = "▶  تشغيل السبام"; ex_startBtn.TextSize = 16
-    ex_startBtn.TextColor3 = ex_WHITE
-    Instance.new("UICorner", ex_startBtn).CornerRadius = UDim.new(0, 10)
-
-    local ex_stopBtn = Instance.new("TextButton", ex_btnsRow)
-    ex_stopBtn.Position = UDim2.new(0.62, 4, 0, 0); ex_stopBtn.Size = UDim2.new(0.38, -4, 1, 0)
-    ex_stopBtn.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
-    ex_stopBtn.BorderSizePixel = 0; ex_stopBtn.AutoButtonColor = false
-    ex_stopBtn.Font = Enum.Font.GothamBold; ex_stopBtn.Text = "⏹  إيقاف"
-    ex_stopBtn.TextSize = 16; ex_stopBtn.TextColor3 = ex_WHITE
-    Instance.new("UICorner", ex_stopBtn).CornerRadius = UDim.new(0, 10)
+    local ex_actionBtn = Instance.new("TextButton", extraPage)
+    ex_actionBtn.Position = UDim2.new(0, 0, 0, 178); ex_actionBtn.Size = UDim2.new(1, 0, 0, 42)
+    ex_actionBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 75); ex_actionBtn.BackgroundTransparency = 0.1
+    ex_actionBtn.BorderSizePixel = 0; ex_actionBtn.AutoButtonColor = false
+    ex_actionBtn.Font = Enum.Font.GothamBlack; ex_actionBtn.Text = "تشغيل السبام اكسترا 🚀"
+    ex_actionBtn.TextSize = 16; ex_actionBtn.TextColor3 = ex_WHITE
+    Instance.new("UICorner", ex_actionBtn).CornerRadius = UDim.new(0, 10)
 
     local ex_running = false
-    local ex_thread
-
-    ex_startBtn.MouseButton1Click:Connect(function()
-        if ex_running then return end
-        ex_running = true
-        ex_thread = task.spawn(function()
-            while ex_running do
-                if ex_cmdBox.Text ~= "" then
-                    pcall(function()
-                        if hdRemote then hdRemote:InvokeServer(ex_cmdBox.Text) end
-                    end)
+    ex_actionBtn.MouseButton1Click:Connect(function()
+        if not ex_selectedName then
+            ex_selectedLabel.Text = "⚠️ اختر لاعب أولاً!"
+            return
+        end
+        ex_running = not ex_running
+        if ex_running then
+            ex_actionBtn.Text = "إيقاف السبام اكسترا 🛑"
+            ex_actionBtn.BackgroundColor3 = Color3.fromRGB(180, 30, 30)
+            task.spawn(function()
+                while ex_running do
+                    local target = ex_selectedName
+                    if ex_nameMode == "three" then
+                        target = target:sub(1, 3)
+                    end
+                    local prefix = ex_prefixBox.Text ~= "" and ex_prefixBox.Text or ";"
+                    local rawText = ex_cmdBox.Text
+                    local finalMsg = ""
+                    if rawText:sub(1, 1) == ";" or rawText:sub(1, 1) == prefix then
+                        finalMsg = prefix .. rawText:gsub("^%p", "") .. " " .. target
+                    else
+                        finalMsg = rawText .. " " .. target
+                    end
+                    
+                    local parts = {}
+                    for i = 1, 35 do parts[i] = finalMsg end
+                    local combined = table.concat(parts, " ")
+                    
+                    sendOnce(combined)
+                    task.wait(0.05)
                 end
-                task.wait(0.05)
-            end
-        end)
-    end)
-
-    ex_stopBtn.MouseButton1Click:Connect(function()
-        ex_running = false
-        if ex_thread then task.cancel(ex_thread) end
+            end)
+        else
+            ex_actionBtn.Text = "تشغيل السبام اكسترا 🚀"
+            ex_actionBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 75)
+        end
     end)
 end
 
