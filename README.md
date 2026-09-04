@@ -266,15 +266,11 @@ local function showWhatsNew()
     local bodyLines = {
         "✦ التحديثات الجديدة ✦",
         "",
-        "🔹 تم تغيير الإنترو إلى إنترو جديد",
-        "🔹 تم تغيير ريموت الشات في خانة النسخ",
-        "🔹 تم إضافة زرين في خانة النسخ:",
-        "   • اسم كامل — يرسل الأوامر بالاسم الكامل",
-        "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
-        "🔹 تم دمج اختيار اللاعبين مع زر النسخ السريع",
-        "🔹 تم دعم السبام المباشر عند الكتابة بدون تحديد لاعب",
-        "🔹 تم حذف التايتال لان انتهت الثغرة",
-        "🔹 تم إضافة مراقبة الشات / تقليد الشات",
+        "🔹 تم إصلاح إرسال ريموت الشات الأساسي بنجاح",
+        "🔹 تم دمج اختيار اللاعبين وزر النسخ السريع",
+        "🔹 دعم إرسال السبام المباشر عند عدم تحديد لاعب",
+        "🔹 تم إضافة زرين في خانة النسخ (اسم كامل / ٣ حروف)",
+        "🔹 تفعيل نسخ خفي والتحكم الكامل",
         "",
         "حسابي روب: shhode320~",
     }
@@ -970,7 +966,7 @@ local function applyPrefix(newPrefix)
 end
 
 prefixBox.FocusLost:Connect(function()
-    local val = prefixBox.Text
+    val = prefixBox.Text
     if val == "" then val = ";" prefixBox.Text = ";" end
     applyPrefix(val)
 end)
@@ -978,7 +974,24 @@ end)
 local function sendOnce(message)
     if not silentMode then
         pcall(function()
-            game:GetService("ReplicatedStorage").RemoteEvents.DataService:FireServer(message)
+            local ds = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+            if ds then
+                local say = ds:FindFirstChild("SayMessageRequest")
+                if say then
+                    say:FireServer(message, "All")
+                end
+            end
+            local textChat = game:GetService("TextChatService")
+            if textChat and textChat.ChatInputBarConfiguration then
+                local chan = textChat.TextChannels:FindFirstChild("RBXGeneral")
+                if chan then
+                    chan:SendAsync(message)
+                end
+            end
+            local dataService = ReplicatedStorage:FindFirstChild("RemoteEvents") and ReplicatedStorage.RemoteEvents:FindFirstChild("DataService")
+            if dataService then
+                dataService:FireServer(message)
+            end
         end)
     end
     if hdRemote then
@@ -1305,6 +1318,11 @@ do
             while ex_running do
                 if ex_cmdBox.Text ~= "" then
                     pcall(function()
+                        local ds = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+                        if ds then
+                            local say = ds:FindFirstChild("SayMessageRequest")
+                            if say then say:FireServer(ex_cmdBox.Text, "All") end
+                        end
                         if hdRemote then hdRemote:InvokeServer(ex_cmdBox.Text) end
                     end)
                 end
