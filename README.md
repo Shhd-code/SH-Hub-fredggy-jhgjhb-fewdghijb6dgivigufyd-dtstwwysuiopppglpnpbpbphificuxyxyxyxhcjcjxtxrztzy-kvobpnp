@@ -339,7 +339,7 @@ end
 -- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
     pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro_ray/refs/heads/main/README.md"))()
     end)
     task.delay(0.5, function()
         showWhatsNew()
@@ -1228,7 +1228,7 @@ local dancesBtn    = makeBigBtn(ctrlScroll, "رقصات", 112,
     Color3.fromRGB(230, 140, 30), Color3.fromRGB(160, 90, 10))
 local loadBtn      = makeBigBtn(ctrlScroll, "تحكم الراديو", 166,
     Color3.fromRGB(0, 200, 110), Color3.fromRGB(0, 130, 70))
-local hideBtn      = makeBigBtn(ctrlScroll, "إخفاء رسائل السبام", 220,
+local hideBtn      = makeBigBtn(ctrlScroll, "نسخ سكنات ☝️ ", 220,
     Color3.fromRGB(30, 200, 200), Color3.fromRGB(15, 130, 130))
 local spinStartBtn = makeBigBtn(ctrlScroll, "تشغيل الدوران", 274,
     Color3.fromRGB(140, 220, 40), Color3.fromRGB(80, 150, 20))
@@ -1340,22 +1340,17 @@ local function hideSystemNotifications(obj)
 end
 
 hideBtn.MouseButton1Click:Connect(function()
-    if antiActive then
-        ctrlStatus.Text = "حماية الواجهة مفعلة بالفعل"
-        return
-    end
-    antiActive = true
-    antiConnection = PlayerGui.DescendantAdded:Connect(function(d)
-        task.wait(0.01)
-        hideSystemNotifications(d)
-    end)
+   local dancesLoaded = false
+dancesBtn.MouseButton1Click:Connect(function()
+    if dancesLoaded then ctrlStatus.Text = "الرقصات مفعلة بالفعل" return end
+    ctrlStatus.Text = "جاري تشغيل الرقصات..."
     task.spawn(function()
-        for _, v in ipairs(PlayerGui:GetDescendants()) do
-            hideSystemNotifications(v)
-        end
+        local ok, err = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Nshk/refs/heads/main/README.md"))()
+        end)
+        if ok then dancesLoaded = true; ctrlStatus.Text = "تم تشغيل الرقصات"
+        else ctrlStatus.Text = "فشل: " .. tostring(err):sub(1, 60) end
     end)
-    ctrlStatus.Text = "تم تفعيل اخفاء رسائل السبام"
-    print("تم تفعيل حماية الواجهة.. لن تظهر رسائل System بعد الآن.")
 end)
 
 ----------------------------------------------------------------
