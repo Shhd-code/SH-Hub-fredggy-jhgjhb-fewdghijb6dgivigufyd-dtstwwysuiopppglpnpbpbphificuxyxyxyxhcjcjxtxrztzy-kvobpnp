@@ -204,8 +204,6 @@ end)
 ----------------------------------------------------------------
 -- Loading splash: SH Zero Protocol (hacker intro)
 ----------------------------------------------------------------
-
--- ─── نافذة "ما الجديد" تظهر بعد الإنترو ─────────────────────
 local function showWhatsNew()
     local core = game:GetService("CoreGui")
     local wsg = Instance.new("ScreenGui")
@@ -215,14 +213,12 @@ local function showWhatsNew()
     wsg.ResetOnSpawn = false
     wsg.Parent = core
 
-    -- خلفية شفافة داكنة
     local overlay = Instance.new("Frame", wsg)
     overlay.Size = UDim2.new(1, 0, 1, 0)
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.45
     overlay.BorderSizePixel = 0
 
-    -- الإطار الرئيسي
     local card = Instance.new("Frame", wsg)
     card.Size = UDim2.new(0, 400, 0, 0)
     card.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -243,7 +239,6 @@ local function showWhatsNew()
     layout.Padding = UDim.new(0, 10)
     layout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    -- عنوان
     local titleRow = Instance.new("Frame", card)
     titleRow.Size = UDim2.new(1, 0, 0, 30)
     titleRow.BackgroundTransparency = 1
@@ -261,7 +256,6 @@ local function showWhatsNew()
     titleLbl.TextColor3 = Color3.fromRGB(0, 255, 130)
     titleLbl.AutomaticSize = Enum.AutomaticSize.XY
 
-    -- فاصل
     local divider = Instance.new("Frame", card)
     divider.Size = UDim2.new(1, 0, 0, 1)
     divider.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
@@ -269,7 +263,6 @@ local function showWhatsNew()
     divider.BorderSizePixel = 0
     divider.LayoutOrder = 2
 
-    -- النص الرئيسي
     local bodyLines = {
         "✦ التحديثات الجديدة ✦",
         "",
@@ -278,10 +271,10 @@ local function showWhatsNew()
         "🔹 تم إضافة زرين في خانة النسخ:",
         "   • اسم كامل — يرسل الأوامر بالاسم الكامل",
         "   • ثلاث حروف — يرسل الأوامر بأول ٣ حروف فقط",
+        "🔹 تم دمج اختيار اللاعبين مع زر النسخ السريع",
+        "🔹 تم دعم السبام المباشر عند الكتابة بدون تحديد لاعب",
         "🔹 تم حذف التايتال لان انتهت الثغرة",
         "🔹 تم إضافة مراقبة الشات / تقليد الشات",
-        "",
-        "",
         "",
         "حسابي روب: shhode320~",
     }
@@ -296,10 +289,8 @@ local function showWhatsNew()
     bodyLbl.TextColor3 = Color3.fromRGB(200, 245, 215)
     bodyLbl.TextXAlignment = Enum.TextXAlignment.Right
     bodyLbl.TextWrapped = true
-    bodyLbl.RichText = false
     bodyLbl.LayoutOrder = 3
 
-    -- زر إغلاق
     local closeBtn = Instance.new("TextButton", card)
     closeBtn.Size = UDim2.new(1, 0, 0, 36)
     closeBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 70)
@@ -319,7 +310,6 @@ local function showWhatsNew()
         TweenService:Create(closeBtn, TweenInfo.new(0.12), {BackgroundColor3 = Color3.fromRGB(0, 160, 70)}):Play()
     end)
 
-    -- أنيميشن الظهور (AnchorPoint 0.5,0.5 → نبدأ من أسفل قليلاً)
     card.Position = UDim2.new(0.5, 0, 0.65, 0)
     card.BackgroundTransparency = 1
     TweenService:Create(card, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
@@ -336,7 +326,6 @@ local function showWhatsNew()
     closeBtn.MouseButton1Click:Connect(closeWhatsNew)
 end
 
--- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
     pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
@@ -413,7 +402,6 @@ closeStroke.Color = Color3.fromRGB(0, 200, 100); closeStroke.Transparency = 0.4
 closeBtn.MouseEnter:Connect(function() TweenService:Create(closeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.1}):Play() end)
 closeBtn.MouseLeave:Connect(function() TweenService:Create(closeBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.3}):Play() end)
 
--- circle minimize
 local minBtn = Instance.new("TextButton", main)
 minBtn.AnchorPoint = Vector2.new(1, 0)
 minBtn.Position = UDim2.new(1, -44, 0, 8)
@@ -421,15 +409,12 @@ minBtn.Size = UDim2.new(0, 28, 0, 28)
 minBtn.BackgroundColor3 = Color3.fromRGB(0, 90, 45)
 minBtn.BackgroundTransparency = 0.2; minBtn.BorderSizePixel = 0
 minBtn.Text = ""; minBtn.AutoButtonColor = false
-Instance.new("UICorner", minBtn).CornerRadius = UDim.new(1, 0) -- full circle
+Instance.new("UICorner", minBtn).CornerRadius = UDim.new(1, 0)
 local minStroke = Instance.new("UIStroke", minBtn)
 minStroke.Color = Color3.fromRGB(0, 255, 130); minStroke.Transparency = 0.2; minStroke.Thickness = 1.4
 minBtn.MouseEnter:Connect(function() TweenService:Create(minBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0}):Play() end)
 minBtn.MouseLeave:Connect(function() TweenService:Create(minBtn, TweenInfo.new(0.15), {BackgroundTransparency = 0.2}):Play() end)
 
-----------------------------------------------------------------
--- Floating mini circle (when hidden)
-----------------------------------------------------------------
 local miniGui = Instance.new("ScreenGui")
 miniGui.Name = "SHMini"; miniGui.ResetOnSpawn = false; miniGui.IgnoreGuiInset = true
 miniGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling; miniGui.DisplayOrder = 9001
@@ -452,7 +437,6 @@ Instance.new("UICorner", miniBubble).CornerRadius = UDim.new(1, 0)
 local miniStroke = Instance.new("UIStroke", miniBubble)
 miniStroke.Color = Color3.fromRGB(0, 255, 130); miniStroke.Thickness = 1.6; miniStroke.Transparency = 0.2
 
--- pulse
 task.spawn(function()
     while miniGui.Parent do
         if miniBubble.Visible then
@@ -491,9 +475,6 @@ closeBtn.MouseButton1Click:Connect(function()
     task.wait(0.22); gui:Destroy(); miniGui:Destroy()
 end)
 
-----------------------------------------------------------------
--- Drag main + mini
-----------------------------------------------------------------
 local function makeDraggable(handle, target)
     local dragging, dragStart, startPos
     handle.InputBegan:Connect(function(input)
@@ -893,6 +874,11 @@ end
 
 local function buildLogsCmd(name, prefix)
     prefix = prefix or ";"
+    if not name or name == "" then
+        local parts = {}
+        for i = 1, 26 do parts[i] = prefix.."logs" end
+        return table.concat(parts, " ")
+    end
     local parts = {}
     for i = 1, 26 do parts[i] = prefix.."logs "..name end
     return table.concat(parts, " ")
@@ -900,6 +886,11 @@ end
 
 local function buildReCmd(name, prefix)
     prefix = prefix or ";"
+    if not name or name == "" then
+        local parts = {}
+        for i = 1, 26 do parts[i] = prefix.."re" end
+        return table.concat(parts, " ")
+    end
     local parts = {}
     for i = 1, 26 do parts[i] = prefix.."re "..name end
     return table.concat(parts, " ")
@@ -907,6 +898,12 @@ end
 
 local function buildSpamA(name, prefix)
     prefix = prefix or ";"
+    if not name or name == "" then
+        local block = prefix.."re "..prefix.."res "..prefix.."logs "..prefix.."clogs "..prefix.."nv "..prefix.."cmdbar "..prefix.."jc "..prefix.."ice"
+        local parts = {}
+        for i = 1, 8 do parts[i] = block end
+        return table.concat(parts, " ")
+    end
     local block = prefix.."re "..name.." "..prefix.."res "..name.." "..prefix.."logs "..name.." "..prefix.."clogs "..name.." "..prefix.."nv "..name.." "..prefix.."cmdbar "..name.." "..prefix.."jc "..name.." "..prefix.."ice "..name
     local parts = {}
     for i = 1, 8 do parts[i] = block end
@@ -915,6 +912,12 @@ end
 
 local function buildGhostSpam(name, prefix)
     prefix = prefix or ";"
+    if not name or name == "" then
+        local block = prefix.."explode "..prefix.."warp "..prefix.."logs "..prefix.."clogs "..prefix.."res "..prefix.."ice "..prefix.."jc "..prefix.."dog "..prefix.."char miri "..prefix.."fling "..prefix.."nv "..prefix.."re"
+        local parts = {}
+        for i = 1, 5 do parts[i] = block end
+        return table.concat(parts, " ")
+    end
     local block = prefix.."explode "..name.." "..prefix.."warp "..name.." "..prefix.."logs "..name.." "..prefix.."clogs "..name.." "..prefix.."res "..name.." "..prefix.."ice "..name.." "..prefix.."jc "..name.." "..prefix.."dog "..name.." "..prefix.."char "..name.." miri "..prefix.."fling "..name.." "..prefix.."nv "..name.." "..prefix.."re "..name
     local parts = {}
     for i = 1, 5 do parts[i] = block end
@@ -923,6 +926,16 @@ end
 
 local function buildPowerSpam(name, prefix)
     prefix = prefix or ";"
+    if not name or name == "" then
+        local cmds = {
+            "apparate inf", "fling", "jp inf", "jc",
+            "ice", "emotes", "phase", "cmdbar",
+            "nv", "jump", "re", "res", "kill", "ping",
+        }
+        local out = {}
+        for i, c in ipairs(cmds) do out[i] = prefix..c end
+        return table.concat(out, " ")
+    end
     local cmds = {
         "apparate "..name.." inf", "fling "..name, "jp "..name.." inf", "jc "..name,
         "ice "..name, "emotes "..name, "phase "..name, "cmdbar "..name,
@@ -1010,7 +1023,6 @@ end
 
 copySpamBtn.MouseButton1Click:Connect(function()
     if spamARunning then return end
-    if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildSpamA(getEffectiveName(), prefix))
     spamARunning = true; setStartOn(copySpamBtn)
@@ -1021,7 +1033,6 @@ end)
 
 copyGhostBtn.MouseButton1Click:Connect(function()
     if ghostSpamRunning then return end
-    if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildGhostSpam(getEffectiveName(), prefix))
     ghostSpamRunning = true; setStartOn(copyGhostBtn)
@@ -1032,7 +1043,6 @@ end)
 
 copyLogsBtn.MouseButton1Click:Connect(function()
     if logsSpamRunning then return end
-    if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildLogsCmd(getEffectiveName(), prefix))
     logsSpamRunning = true; setStartOn(copyLogsBtn)
@@ -1043,7 +1053,6 @@ end)
 
 copyReBtn.MouseButton1Click:Connect(function()
     if reSpamRunning then return end
-    if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildReCmd(getEffectiveName(), prefix))
     reSpamRunning = true; setStartOn(copyReBtn)
@@ -1054,7 +1063,6 @@ end)
 
 copyPowerBtn.MouseButton1Click:Connect(function()
     if powerSpamRunning then return end
-    if not selectedName then setStatus("اختر لاعب اولا") return end
     local prefix = (prefixBox.Text ~= "" and prefixBox.Text) or ";"
     startSpam(buildPowerSpam(getEffectiveName(), prefix))
     powerSpamRunning = true; setStartOn(copyPowerBtn)
@@ -1185,7 +1193,6 @@ do
     local ex_DARK2   = Color3.fromRGB(10, 32, 16)
     local ex_WHITE   = Color3.fromRGB(255, 255, 255)
     local ex_YELLOW  = Color3.fromRGB(255, 230, 60)
-    local ex_LBLUE   = Color3.fromRGB(120, 210, 255)
 
     local ex_playersBar = Instance.new("ScrollingFrame", extraPage)
     ex_playersBar.Position = UDim2.new(0, 0, 0, 0)
