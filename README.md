@@ -275,8 +275,8 @@ local function showWhatsNew()
  "",
  "🔹 تم تغيير الإنترو إلى إنترو جديد",
  "🔹 تم اصلاح علامه الادمن ",
- "🔹 تم اضافة نسخ سكنات في خانة التحكم اخر شي وهو للكل مش بس للغامض:",
- " • اسم كامل — يرسل الأوامر بالاسم الكامل",
+ "🔹 تم اضافة نسخ سكنات في خانة التحكم اخر شي وهو للكل مش بس للغامض",
+ " • حلتيته",
  " • تم إصلاح سكربت سبام اكسترا",
  "🔹 تم اضافة نسخ جديد في خانة النسخ  ",
  "🔹 باسورد سكربت الاغاني MZA وبس حياكم ❣️ ",
@@ -339,7 +339,7 @@ end
 -- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
  pcall(function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro_ray/refs/heads/main/README.md"))()
  end)
  task.delay(0.5, function()
  showWhatsNew()
