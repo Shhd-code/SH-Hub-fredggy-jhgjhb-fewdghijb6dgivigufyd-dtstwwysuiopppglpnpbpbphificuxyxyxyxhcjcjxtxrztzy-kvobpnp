@@ -271,15 +271,15 @@ local function showWhatsNew()
 
  -- النص الرئيسي
  local bodyLines = {
- "✦ اخر الاحداثث🤩💥 ✦",
+ "✦  اخر الاحداثث 🤟🤟 ✦",
  "",
- "🔹 اضفت نسخ سكنات موجود في خانه التحكم اخر شي",
- "🔹 حطيت نسخ جديد للغامض وللعادي ويكون يعني قوي ان شاء الله ",
- "🔹 تم اصلاح سبام اكسترا ",
- " • بقا بس اغير الامترو بس كنسلت شرايكم الانترو القديم؟ ",
- "  ",
- " ",
- "",
+ "🔹 تم تغيير الإنترو إلى إنترو جديد",
+ "🔹 تم اصلاح علامه الادمن ",
+ "🔹 تم اضافة نسخ سكنات في خانة التحكم اخر شي وهو للكل مش بس للغامض:",
+ " • اسم كامل — يرسل الأوامر بالاسم الكامل",
+ " • تم إصلاح سكربت سبام اكسترا",
+ "🔹 تم اضافة نسخ جديد في خانة النسخ  ",
+ "🔹 باسورد سكربت الاغاني MZA وبس حياكم ❣️ ",
  "",
  "",
  "",
@@ -339,7 +339,7 @@ end
 -- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
  pcall(function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro_ray/refs/heads/main/README.md"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
  end)
  task.delay(0.5, function()
  showWhatsNew()
@@ -1056,10 +1056,11 @@ end
 local function buildPresetWithName(commandText, name, prefix)
  if not name then return nil end
  prefix = prefix or ";"
+ local sourcePrefix = commandText:match("^%s*(%p+)")
  local parts = {}
  for token in commandText:gmatch("%S+") do
-  if token:sub(1, #prefix) == prefix then
-  table.insert(parts, token .. " " .. name)
+  if sourcePrefix and token:sub(1, #sourcePrefix) == sourcePrefix then
+  table.insert(parts, prefix .. token:sub(#sourcePrefix + 1) .. " " .. name)
   else
   table.insert(parts, token)
   end
