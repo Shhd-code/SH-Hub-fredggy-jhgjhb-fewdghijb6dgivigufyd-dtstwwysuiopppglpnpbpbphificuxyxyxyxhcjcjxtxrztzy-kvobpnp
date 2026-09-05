@@ -339,7 +339,7 @@ end
 -- ─── الإنترو مع تخطي بالضغط مرتين ──────────────────────────
 local function runSplash()
  pcall(function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro/refs/heads/main/README.md"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/Antro_ray/refs/heads/main/README.md"))()
  end)
  task.delay(0.5, function()
  showWhatsNew()
