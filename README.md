@@ -1,2 +1,1 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/SH_NEW/refs/heads/main/Iraq_Favorite%20(1).txt"))()
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shhd-code/cuddly-goggles/refs/heads/main/README.md"))()
